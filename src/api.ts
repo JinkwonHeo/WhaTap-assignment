@@ -51,26 +51,34 @@ const getPath = (url: string, param?: IParamType) => {
   return path;
 };
 
-const getOpenApi = (type: string) => (key: string, param?: IParamType) =>
-  new Promise((resolve, reject) => {
+const getOpenApi = (type: string) => async (key: string, param?: IParamType) => {
+  let url = '';
+  let name = '';
+
+  try {
     if (key in OPEN_API[type]) {
-      if (type === '')
-        return resolve({ url: [OPEN_API_ROOT, key].join('/'), name: OPEN_API[type][key] });
-      return resolve({ url: [OPEN_API_ROOT, type, key].join('/'), name: OPEN_API[type][key] });
+      if (type === '') {
+        url = [OPEN_API_ROOT, key].join('/');
+        name = OPEN_API[type][key];
+      } else {
+        url = [OPEN_API_ROOT, type, key].join('/');
+        name = OPEN_API[type][key];
+      }
     } else {
-      reject('잘못된 API 정보');
+      throw new Error('잘못된 API 정보');
     }
-  }).then(({ url, name }: any) =>
-    fetch(getPath(url, param), {
-      headers: requestHeaders,
-    })
-      .then((response) => response.json())
-      .then((data) => ({
-        key,
-        name,
-        data,
-      }))
-  );
+  } catch (error) {
+    console.error(error);
+  }
+
+  const response = await fetch(getPath(url, param), {
+    headers: requestHeaders,
+  });
+
+  const data = await response.json();
+
+  return { key, name, data };
+};
 
 const spot = getOpenApi(''); // spot 정보 조회
 const series = getOpenApi('json'); // 통계 정보 조회
