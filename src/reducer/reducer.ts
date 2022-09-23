@@ -1,4 +1,4 @@
-import { Action, State, DataActionTypes } from './context';
+import { Action, State, DataActionTypes } from './types';
 import produce from 'immer';
 
 function reducer(state: State, action: Action) {

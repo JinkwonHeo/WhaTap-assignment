@@ -1,4 +1,4 @@
-import { DataActionTypes } from './context';
+import { DataActionTypes } from './types';
 
 export const updateTpsData = (data: number) => {
   return {
