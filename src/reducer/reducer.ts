@@ -1,14 +1,15 @@
-import { Action, State } from './context';
+import { Action, State, DataActionTypes } from './context';
+import produce from 'immer';
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
-    case 'UPDATE_TPS_DATA':
-      return {
-        ...state,
-        tps: {
-          data: [...state.tps.data, action.data],
-        },
-      };
+    case DataActionTypes.UPDATE_TPS_DATA: {
+      const nextState = produce(state, (draft: State) => {
+        draft.tps.data.push(action.data);
+      });
+
+      return nextState;
+    }
     default:
       return state;
   }
