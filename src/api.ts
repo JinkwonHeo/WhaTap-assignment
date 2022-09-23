@@ -37,6 +37,11 @@ const OPEN_API: IParamType = {
   },
   json: {
     'exception/{stime}/{etime}': 'Exception 발생 ',
+    'sql/{stime}/{etime}': 'SQL 발행',
+    'transaction/{stime}/{etime}': 'Transaction 발생',
+    'thread_count/{stime}/{etime}': 'thread_count',
+    'thread_count/{stime}/{etime}/avg': 'thread_count average',
+    'visitor_5m/{stime}/{etime}': '액티브 사용자(5분 단위)',
     project: 'Project 정보',
   },
 };
