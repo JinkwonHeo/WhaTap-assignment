@@ -7,9 +7,23 @@ type State = {
   inActAgent: IAgent;
   cpuCore: ICpuCore;
   hosts: IHosts;
+  activeMethod: IActiveMethod;
+  activeSql: IActiveSql;
+  activeHttpc: IActiveHttpc;
+  activeDbc: IActiveDbc;
+  activeSocket: IActiveSocket;
 };
 
-type Action = IUpdateActAgent | IUpdateTpsDataAction | IUpdateInActAgent | ICpuCoreAction;
+type Action =
+  | IUpdateActAgent
+  | IUpdateTpsDataAction
+  | IUpdateInActAgent
+  | ICpuCoreAction
+  | IActiveMethodUpdateAction
+  | IActiveSqlUpdateAction
+  | IActiveHttpcUpdateAction
+  | IActiveDbcUpdateAction
+  | IActiveSocketUpdateAction;
 
 interface IUpdateTpsDataAction {
   type: DataActionTypes.UPDATE_TPS_DATA;
@@ -28,6 +42,31 @@ interface IUpdateInActAgent {
 
 interface ICpuCoreAction {
   type: DataActionTypes.UPDATE_CPU_CORE;
+  data: number;
+}
+
+interface IActiveMethodUpdateAction {
+  type: DataActionTypes.UPDATE_ACTIVE_METHOD;
+  data: number;
+}
+
+interface IActiveSqlUpdateAction {
+  type: DataActionTypes.UPDATE_ACTIVE_SQL;
+  data: number;
+}
+
+interface IActiveHttpcUpdateAction {
+  type: DataActionTypes.UPDATE_ACTIVE_HTTPC;
+  data: number;
+}
+
+interface IActiveDbcUpdateAction {
+  type: DataActionTypes.UPDATE_ACTIVE_DBC;
+  data: number;
+}
+
+interface IActiveSocketUpdateAction {
+  type: DataActionTypes.UPDATE_ACTIVE_SOCKET;
   data: number;
 }
 
@@ -52,6 +91,31 @@ interface ICpuCore {
 }
 
 interface IHosts {
+  data: number;
+  error?: string;
+}
+
+interface IActiveMethod {
+  data: number;
+  error?: string;
+}
+
+interface IActiveSql {
+  data: number;
+  error?: string;
+}
+
+interface IActiveHttpc {
+  data: number;
+  error?: string;
+}
+
+interface IActiveDbc {
+  data: number;
+  error?: string;
+}
+
+interface IActiveSocket {
   data: number;
   error?: string;
 }
