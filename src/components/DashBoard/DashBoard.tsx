@@ -1,8 +1,9 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { DispatchContext } from '../../reducer/context';
 import { updateTpsData } from '../../reducer/action';
 import api from '../../api';
 import useInterval from '../../hooks/useInterval';
+import TPSLineChart from '../TPSLineChart/TPSLineChart';
 
 export default function DashBoard() {
   const dispatch = useContext(DispatchContext);
@@ -14,5 +15,5 @@ export default function DashBoard() {
 
   useInterval(fetchApi, 5000);
 
-  return <div>dashboard</div>;
+  return <TPSLineChart />;
 }

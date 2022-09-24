@@ -1,4 +1,4 @@
-import React, { useContext, createContext, useReducer, Dispatch } from 'react';
+import React, { createContext, useReducer } from 'react';
 import reducer from './reducer';
 import { State, DataDispatch } from './types';
 
@@ -21,9 +21,5 @@ function DataProvider({ children }: { children: React.ReactNode }) {
     </DataContext.Provider>
   );
 }
-
-export const PermissionState = () => {
-  return useContext(DataContext);
-};
 
 export default DataProvider;

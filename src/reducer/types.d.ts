@@ -1,16 +1,22 @@
-export enum DataActionTypes {
-  UPDATE_TPS_DATA = 'UPDATE_TPS_DATA',
-}
+import { Dispatch } from 'react';
+import { DataActionTypes } from './actionTypes';
 
-export type State = {
+type State = {
   tps: ITps;
 };
 
-export type Action = { type: DataActionTypes.UPDATE_TPS_DATA; data: number };
+type Action = { type: DataActionTypes.UPDATE_TPS_DATA; data: ITpsData };
 
 type DataDispatch = Dispatch<Action>;
 
+interface ITpsData {
+  timeStamp: date;
+  data: number;
+}
+
 interface ITps {
-  data: number[];
+  data: ITpsData[];
   error?: string;
 }
+
+export { State, Action, DataDispatch, ITps, ITpsData };
