@@ -36,8 +36,6 @@ export default function LineChart({
     const svg = select(svgRef.current);
     if (!dimensions) return;
 
-    console.log(tps.data);
-
     const lineGenerator = line<any>()
       .x((value) => xScale(value.timeStamp))
       .y((value) => yScale(value.data));
@@ -77,7 +75,7 @@ export default function LineChart({
 const SvgWrapper = styled.div`
   max-width: 500px;
   height: 300px;
-  margin: 200px auto;
+  margin: 0 auto;
 `;
 
 const LineChartSvg = styled.svg`
