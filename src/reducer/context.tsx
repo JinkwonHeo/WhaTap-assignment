@@ -7,6 +7,22 @@ const INITIAL_STATE = {
     data: [],
     error: '',
   },
+  actAgent: {
+    data: 0,
+    error: '',
+  },
+  inActAgent: {
+    data: 0,
+    error: '',
+  },
+  cpuCore: {
+    data: 0,
+    error: '',
+  },
+  hosts: {
+    data: 0,
+    error: '',
+  },
 };
 
 export const DataContext = createContext<State>(INITIAL_STATE);
