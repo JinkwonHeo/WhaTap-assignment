@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function useResizeObserver(ref: any) {
-  const [dimensions, setDimensions] = useState(null);
+  const [dimensions, setDimensions] = useState<DOMRectReadOnly | null>(null);
 
   useEffect(() => {
     const observeTarget = ref.current;

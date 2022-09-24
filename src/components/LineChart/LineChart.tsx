@@ -1,4 +1,4 @@
-import { useContext, useRef, useEffect, useState } from 'react';
+import { useContext, useRef, useEffect } from 'react';
 import {
   axisBottom,
   axisLeft,
@@ -25,13 +25,13 @@ export default function LineChart() {
     const svg = select(svgRef.current);
     if (!dimensions) return;
 
-    const maxDomainValue = max(data, function (d) {
+    const maxDomainValue: number | undefined = max(data, function (d) {
       return d;
     });
 
     console.log(tps.data);
 
-    const myLine = line()
+    const lineGenerator = line<any>()
       .x((value) => xScale(value.timeStamp))
       .y((value) => yScale(value.data));
 
@@ -39,11 +39,13 @@ export default function LineChart() {
       .domain([Date.now() - 1000 * 60 * 10, Date.now()])
       .range([0, dimensions.width]);
     const yScale = scaleLinear()
-      .domain([0, (maxDomainValue * 4) / 3])
+      .domain([0, maxDomainValue ? (maxDomainValue * 4) / 3 : 100])
       .range([dimensions.height, 0]);
 
-    const xAxis = axisBottom(xScale).tickFormat(timeFormat('%H:%M')).ticks(timeMinute.every(2));
-    const yAxis = axisLeft(yScale).ticks(4);
+    const xAxis: any = axisBottom<Date>(xScale)
+      .tickFormat(timeFormat('%H:%M'))
+      .ticks(timeMinute.every(2));
+    const yAxis: any = axisLeft(yScale).ticks(4);
     svg.select('.x-axis').style('transform', `translateY(${dimensions.height}px)`).call(xAxis);
     svg.select('.y-axis').call(yAxis);
 
@@ -52,7 +54,7 @@ export default function LineChart() {
       .data([tps.data])
       .join('path')
       .attr('class', 'line')
-      .attr('d', myLine)
+      .attr('d', lineGenerator)
       .attr('fill', 'none')
       .attr('stroke', '#4897F8')
       .attr('stroke-width', 1.5);
