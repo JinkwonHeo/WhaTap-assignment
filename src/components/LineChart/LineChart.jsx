@@ -69,7 +69,7 @@ export default function LineChart() {
 }
 
 const SvgWrapper = styled.div`
-  width: 500px;
+  max-width: 500px;
   height: 300px;
   margin: 0 auto;
 `;

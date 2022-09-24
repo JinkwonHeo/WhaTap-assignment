@@ -1,6 +1,4 @@
 import DashBoard from './components/DashBoard/DashBoard';
-import LineChart from './components/LineChart/LineChart';
-import TPSLineChart from './components/TPSLineChart/TPSLineChart';
 import DataProvider from './reducer/context';
 
 export default function App() {
@@ -8,9 +6,6 @@ export default function App() {
     <>
       <DataProvider>
         <DashBoard />
-        <TPSLineChart>
-          <LineChart />
-        </TPSLineChart>
       </DataProvider>
     </>
   );
