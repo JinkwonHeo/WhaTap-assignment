@@ -4,7 +4,6 @@ import { updateTpsData } from '../../reducer/action';
 import api from '../../api';
 import useInterval from '../../hooks/useInterval';
 import TPSLineChart from '../TPSLineChart/TPSLineChart';
-import LineChart from '../LineChart/LineChart';
 
 export default function DashBoard() {
   const dispatch = useContext(DispatchContext);
@@ -16,9 +15,5 @@ export default function DashBoard() {
 
   useInterval(fetchApi, 5000);
 
-  return (
-    <TPSLineChart>
-      <LineChart />
-    </TPSLineChart>
-  );
+  return <TPSLineChart />;
 }

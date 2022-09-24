@@ -1,33 +1,40 @@
-import { useContext, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import {
   axisBottom,
   axisLeft,
   line,
-  max,
   scaleLinear,
   select,
   scaleTime,
   timeMinute,
   timeFormat,
 } from 'd3';
-import { DataContext } from '../../reducer/context';
 import useResizeObserver from '../../hooks/useResizeOBserver';
 import styled from 'styled-components';
+import { ITps } from '../../reducer/types';
 
-export default function LineChart() {
-  const { tps } = useContext(DataContext);
+export default function LineChart({
+  tps,
+  data,
+  xDomain,
+  yDomain,
+  format,
+  xTick,
+}: {
+  tps: ITps;
+  data: number[];
+  xDomain: number[];
+  yDomain: number[];
+  format: string;
+  xTick: number;
+}) {
   const svgRef = useRef(null);
   const wrappedRef = useRef(null);
   const dimensions = useResizeObserver(wrappedRef);
-  const data = tps.data.map((element) => element.data);
 
   useEffect(() => {
     const svg = select(svgRef.current);
     if (!dimensions) return;
-
-    const maxDomainValue: number | undefined = max(data, function (d) {
-      return d;
-    });
 
     console.log(tps.data);
 
@@ -35,17 +42,14 @@ export default function LineChart() {
       .x((value) => xScale(value.timeStamp))
       .y((value) => yScale(value.data));
 
-    const xScale = scaleTime()
-      .domain([Date.now() - 1000 * 60 * 10, Date.now()])
-      .range([0, dimensions.width]);
-    const yScale = scaleLinear()
-      .domain([0, maxDomainValue ? (maxDomainValue * 4) / 3 : 100])
-      .range([dimensions.height, 0]);
+    const xScale = scaleTime().domain(xDomain).range([0, dimensions.width]);
+    const yScale = scaleLinear().domain(yDomain).range([dimensions.height, 0]);
 
     const xAxis: any = axisBottom<Date>(xScale)
-      .tickFormat(timeFormat('%H:%M'))
-      .ticks(timeMinute.every(2));
+      .tickFormat(timeFormat(format))
+      .ticks(timeMinute.every(xTick));
     const yAxis: any = axisLeft(yScale).ticks(4);
+
     svg.select('.x-axis').style('transform', `translateY(${dimensions.height}px)`).call(xAxis);
     svg.select('.y-axis').call(yAxis);
 
@@ -73,7 +77,7 @@ export default function LineChart() {
 const SvgWrapper = styled.div`
   max-width: 500px;
   height: 300px;
-  margin: 0 auto;
+  margin: 200px auto;
 `;
 
 const LineChartSvg = styled.svg`
