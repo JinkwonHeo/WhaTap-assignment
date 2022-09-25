@@ -1,54 +1,30 @@
-import { useRef, useEffect, useContext } from 'react';
+import { useRef, useEffect } from 'react';
 import { select, scaleBand, scaleLinear, max, axisLeft } from 'd3';
 import useResizeObserver from '../../hooks/useResizeOBserver';
-import { DataContext } from '../../reducer/context';
 import { IBarChartData, INode } from './type';
 import styled from 'styled-components';
 
-export default function RacingBarChart() {
+export default function BarChart({
+  data,
+  maxValue,
+}: {
+  data: IBarChartData[];
+  maxValue: number | undefined;
+}) {
   const svgRef = useRef(null);
   const wrappedRef = useRef(null);
   const dimensions = useResizeObserver(wrappedRef);
-  const { activeMethod, activeSql, activeHttpc, activeDbc, activeSocket } = useContext(DataContext);
-  const data: IBarChartData[] = [
-    {
-      name: 'METHOD',
-      value: activeMethod.data,
-      color: '#b7e2fb',
-    },
-    {
-      name: 'SQL',
-      value: activeSql.data,
-      color: '#b0eae9',
-    },
-    {
-      name: 'HTTPC',
-      value: activeHttpc.data,
-      color: '#ebbdf5',
-    },
-    {
-      name: 'DBC',
-      value: activeDbc.data,
-      color: '#f2ccbb',
-    },
-    {
-      name: 'SOCKET',
-      value: activeSocket.data,
-      color: '#fa697c',
-    },
-  ];
 
   useEffect(() => {
     const svg = select(svgRef.current);
     if (!dimensions) return;
-
-    const maxValue: number | undefined = max(data, (entry) => entry.value);
 
     const xScale = scaleLinear()
       .domain([0, maxValue ? maxValue : 100])
       .range([0, dimensions.width]);
     const yScale: any = scaleBand<number>()
       .paddingInner(0.2)
+      .paddingOuter(0.1)
       .domain(data.map((value: IBarChartData, index: number) => index))
       .range([0, dimensions.height]);
 
@@ -77,7 +53,8 @@ export default function RacingBarChart() {
       .join((enter) =>
         enter.append('text').attr('y', (entry, index) => yScale(index) + yScale.bandwidth() / +6)
       )
-      .text((entry) => `${entry.name} (${entry.value})`)
+      .text((entry) => `${entry.name}`)
+      .style('fill', '#767676')
       .attr('class', 'label')
       .attr('x', 10)
       .transition()
@@ -85,24 +62,38 @@ export default function RacingBarChart() {
   }, [data, dimensions]);
 
   return (
-    <SvgWrapper ref={wrappedRef}>
-      <BarChartSvg ref={svgRef}>
-        <g className="value-axis" />
-      </BarChartSvg>
-    </SvgWrapper>
+    <>
+      <BarChartText>액티브 스테이터스</BarChartText>
+      <SvgWrapper ref={wrappedRef}>
+        <BarChartSvg ref={svgRef}>
+          <BarChartGroup className="value-axis" />
+        </BarChartSvg>
+      </SvgWrapper>
+    </>
   );
 }
 
 const SvgWrapper = styled.div`
-  max-width: 500px;
-  height: 300px;
-  margin: 0 auto;
-  margin-bottom: 10px;
+  height: 100%;
+  padding-top: 0.6rem;
+  padding-left: 30px;
 `;
 
 const BarChartSvg = styled.svg`
   display: block;
   width: 100%;
-  height: 300px;
+  height: 100%;
   overflow: visible;
+`;
+
+const BarChartText = styled.span`
+  font-family: Pretendard-medium;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+const BarChartGroup = styled.g`
+  font-family: Pretendard-medium;
+  font-size: 1rem;
 `;
