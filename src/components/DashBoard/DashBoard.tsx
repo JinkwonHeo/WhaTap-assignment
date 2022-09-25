@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { DispatchContext } from '../../reducer/context';
 import {
   updateActAgent,
@@ -16,7 +16,7 @@ import api from '../../api';
 import useInterval from '../../hooks/useInterval';
 import TPSLineChart from '../TPSLineChart/TPSLineChart';
 import Informatics from '../Informatics/Informatics';
-import ApiTest from '../ApiTest';
+import BarChart from '../BarChart/BarChart';
 
 export default function DashBoard() {
   const dispatch = useContext(DispatchContext);
@@ -45,13 +45,17 @@ export default function DashBoard() {
     dispatch(updateActiveSocket(activeSocketData.data));
   }
 
+  useEffect(() => {
+    fetchApi();
+  }, []);
+
   useInterval(fetchApi, 5000);
 
   return (
     <>
       <Informatics />
+      <BarChart />
       <TPSLineChart />
-      <ApiTest />
     </>
   );
 }
