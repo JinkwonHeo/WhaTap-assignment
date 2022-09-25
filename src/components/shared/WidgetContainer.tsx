@@ -5,5 +5,4 @@ export const WidgetContainer = styled.div`
   width: 25%;
   height: 30%;
   min-height: 148px;
-  padding: 0.4rem;
 `;

@@ -3,6 +3,7 @@ import { select, scaleBand, scaleLinear, max, axisLeft } from 'd3';
 import useResizeObserver from '../../hooks/useResizeOBserver';
 import { IBarChartData, INode } from './type';
 import styled from 'styled-components';
+import { Text } from '../shared/Text';
 
 export default function BarChart({
   data,
@@ -22,6 +23,7 @@ export default function BarChart({
     const xScale = scaleLinear()
       .domain([0, maxValue ? maxValue : 100])
       .range([0, dimensions.width]);
+
     const yScale: any = scaleBand<number>()
       .paddingInner(0.2)
       .paddingOuter(0.1)
@@ -31,6 +33,7 @@ export default function BarChart({
     const valueAxisScale = scaleBand()
       .domain(data.map((value: any) => value.value))
       .range([0, dimensions.height]);
+
     const valueAxis: any = axisLeft(valueAxisScale).tickSize(0).tickPadding(12);
 
     svg.select('.value-axis').call(valueAxis);
@@ -63,7 +66,7 @@ export default function BarChart({
 
   return (
     <>
-      <BarChartText>액티브 스테이터스</BarChartText>
+      <Text>액티브 스테이터스</Text>
       <SvgWrapper ref={wrappedRef}>
         <BarChartSvg ref={svgRef}>
           <BarChartGroup className="value-axis" />
@@ -84,13 +87,6 @@ const BarChartSvg = styled.svg`
   width: 100%;
   height: 100%;
   overflow: visible;
-`;
-
-const BarChartText = styled.span`
-  font-family: Pretendard-medium;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
 `;
 
 const BarChartGroup = styled.g`
