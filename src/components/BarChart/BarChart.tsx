@@ -31,10 +31,15 @@ export default function BarChart({
       .range([0, dimensions.height]);
 
     const valueAxisScale = scaleBand()
-      .domain(data.map((value: any) => value.value))
+      .domain(data.map((value: IBarChartData, index: number) => value.value + '-' + index))
       .range([0, dimensions.height]);
 
-    const valueAxis: any = axisLeft(valueAxisScale).tickSize(0).tickPadding(12);
+    const valueAxis: any = axisLeft(valueAxisScale)
+      .tickSize(0)
+      .tickPadding(12)
+      .tickFormat(function (d) {
+        return d.split('-')[0];
+      });
 
     svg.select('.value-axis').call(valueAxis);
 
