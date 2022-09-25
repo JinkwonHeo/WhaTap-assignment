@@ -14,3 +14,8 @@
   font-family: 'Pretendard-light';
   src: url('../style//fonts/Pretendard-Light.ttf');
 }
+
+#root {
+  height: 100%;
+  width: 100%;
+}

@@ -16,7 +16,8 @@ import api from '../../api';
 import useInterval from '../../hooks/useInterval';
 import TPSLineChart from '../TPSLineChart/TPSLineChart';
 import Informatics from '../Informatics/Informatics';
-import BarChart from '../BarChart/BarChart';
+import ActiveStatusBarChart from '../ActiveStatusBarChart/ActiveStatusBarChart';
+import { WidgetContainer } from '../shared/WidgetContainer';
 
 export default function DashBoard() {
   const dispatch = useContext(DispatchContext);
@@ -53,8 +54,10 @@ export default function DashBoard() {
 
   return (
     <>
-      <Informatics />
-      <BarChart />
+      <WidgetContainer>
+        <Informatics />
+        <ActiveStatusBarChart />
+      </WidgetContainer>
       <TPSLineChart />
     </>
   );
