@@ -3,7 +3,6 @@ import { DataActionTypes } from './actionTypes';
 import produce from 'immer';
 
 function reducer(state: State, action: Action) {
-  console.log(state);
   switch (action.type) {
     case DataActionTypes.UPDATE_TPS_DATA: {
       const date = Date.now();
@@ -53,6 +52,56 @@ function reducer(state: State, action: Action) {
         if (draft.hosts.data === action.data) return;
 
         draft.hosts.data = action.data;
+      });
+
+      return nextState;
+    }
+
+    case DataActionTypes.UPDATE_ACTIVE_METHOD: {
+      const nextState = produce(state, (draft: State) => {
+        if (draft.activeMethod.data === action.data) return;
+
+        draft.activeMethod.data = action.data;
+      });
+
+      return nextState;
+    }
+
+    case DataActionTypes.UPDATE_ACTIVE_SQL: {
+      const nextState = produce(state, (draft: State) => {
+        if (draft.activeSql.data === action.data) return;
+
+        draft.activeSql.data = action.data;
+      });
+
+      return nextState;
+    }
+
+    case DataActionTypes.UPDATE_ACTIVE_HTTPC: {
+      const nextState = produce(state, (draft: State) => {
+        if (draft.activeHttpc.data === action.data) return;
+
+        draft.activeHttpc.data = action.data;
+      });
+
+      return nextState;
+    }
+
+    case DataActionTypes.UPDATE_ACTIVE_DBC: {
+      const nextState = produce(state, (draft: State) => {
+        if (draft.activeDbc.data === action.data) return;
+
+        draft.activeDbc.data = action.data;
+      });
+
+      return nextState;
+    }
+
+    case DataActionTypes.UPDATE_ACTIVE_SOCKET: {
+      const nextState = produce(state, (draft: State) => {
+        if (draft.activeSocket.data === action.data) return;
+
+        draft.activeSocket.data = action.data;
       });
 
       return nextState;

@@ -23,6 +23,26 @@ const INITIAL_STATE = {
     data: 0,
     error: '',
   },
+  activeMethod: {
+    data: 0,
+    error: '',
+  },
+  activeSql: {
+    data: 0,
+    error: '',
+  },
+  activeHttpc: {
+    data: 0,
+    error: '',
+  },
+  activeDbc: {
+    data: 0,
+    error: '',
+  },
+  activeSocket: {
+    data: 0,
+    error: '',
+  },
 };
 
 export const DataContext = createContext<State>(INITIAL_STATE);

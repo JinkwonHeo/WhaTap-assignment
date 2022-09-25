@@ -34,3 +34,38 @@ export const updateHosts = (data: number) => {
     data,
   };
 };
+
+export const updateActiveMethod = (data: number) => {
+  return {
+    type: DataActionTypes.UPDATE_ACTIVE_METHOD,
+    data,
+  };
+};
+
+export const updateActiveSql = (data: number) => {
+  return {
+    type: DataActionTypes.UPDATE_ACTIVE_SQL,
+    data,
+  };
+};
+
+export const updateActiveHttpc = (data: number) => {
+  return {
+    type: DataActionTypes.UPDATE_ACTIVE_HTTPC,
+    data,
+  };
+};
+
+export const updateActiveDbc = (data: number) => {
+  return {
+    type: DataActionTypes.UPDATE_ACTIVE_DBC,
+    data,
+  };
+};
+
+export const updateActiveSocket = (data: number) => {
+  return {
+    type: DataActionTypes.UPDATE_ACTIVE_SOCKET,
+    data,
+  };
+};
