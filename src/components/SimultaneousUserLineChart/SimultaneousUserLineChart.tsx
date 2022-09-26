@@ -5,24 +5,24 @@ import LineChart from '../LineChart/LineChart';
 import styled from 'styled-components';
 
 export default function TPSLineChart() {
-  const { tps } = useContext(DataContext);
-  const data = tps.data.map((element) => element.data);
+  const { simultaneousUser } = useContext(DataContext);
+  const data = simultaneousUser.data.map((element) => element.data);
   const maxDomainValue: number | undefined = max(data, function (d) {
     return d;
   });
-
+  console.log(simultaneousUser);
   const xDomain = [Date.now() - 1000 * 60 * 10, Date.now()];
   const yDomain = [0, maxDomainValue ? (maxDomainValue * 4) / 3 : 100];
 
   const format = '%H:%M';
   const xTick = 2;
-  const chartName = 'TPS';
+  const chartName = '동시접속 사용자';
 
   return (
     <LineChartContainer>
       <LineChartWrapper>
         <LineChart
-          axisData={tps.data}
+          axisData={simultaneousUser.data}
           data={data}
           xDomain={xDomain}
           yDomain={yDomain}

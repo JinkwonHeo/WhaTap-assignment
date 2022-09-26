@@ -13,23 +13,25 @@ import {
 } from 'd3';
 import useResizeObserver from '../../hooks/useResizeOBserver';
 import styled from 'styled-components';
-import { ITps } from '../../reducer/types';
 import { Text } from '../shared/Text';
+import { IAxisData } from './type';
 
 export default function LineChart({
-  tps,
+  axisData,
   data,
   xDomain,
   yDomain,
   format,
   xTick,
+  chartName,
 }: {
-  tps: ITps;
+  axisData: IAxisData[];
   data: number[];
   xDomain: number[];
   yDomain: number[];
   format: string;
   xTick: number;
+  chartName: string;
 }) {
   const svgRef = useRef(null);
   const wrappedRef = useRef(null);
@@ -60,8 +62,11 @@ export default function LineChart({
       .tickSizeOuter(0);
     const yAxis: any = axisLeft(yScale).ticks(5).tickSize(0).tickPadding(6).tickSizeOuter(0);
 
-    svg.select('.x-axis').style('transform', `translateY(${dimensions.height}px)`).call(xAxis);
-    svg.select('.y-axis').style('transform', 'translateX(1px)').call(yAxis);
+    svg
+      .select('.x-axis')
+      .style('transform', `translateX(3px) translateY(${dimensions.height}px)`)
+      .call(xAxis);
+    svg.select('.y-axis').style('transform', 'translateX(3px)').call(yAxis);
 
     svg
       .append('linearGradient')
@@ -87,7 +92,7 @@ export default function LineChart({
 
     svg
       .selectAll('.line')
-      .data([tps.data])
+      .data([axisData])
       .join('path')
       .attr('class', 'line')
       .attr('d', lineGenerator)
@@ -97,7 +102,7 @@ export default function LineChart({
 
     svg
       .selectAll('.area')
-      .data([tps.data])
+      .data([axisData])
       .join('path')
       .attr('class', 'area')
       .attr('d', areaGenerator)
@@ -106,7 +111,7 @@ export default function LineChart({
 
   return (
     <>
-      <Text>TPS</Text>
+      <Text>{chartName}</Text>
       <SvgWrapper ref={wrappedRef}>
         <LineChartSvg ref={svgRef}>
           <LineChartGroup className="x-axis" />
@@ -118,8 +123,7 @@ export default function LineChart({
 }
 
 const SvgWrapper = styled.div`
-  padding-top: 1.5rem;
-  padding-left: 20px;
+  padding: 1.5rem 0.5rem 0 1.8rem;
 `;
 
 const LineChartSvg = styled.svg`
