@@ -1,26 +1,39 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { DataContext } from '../../reducer/context';
 import { max } from 'd3';
 import LineChart from '../LineChart/LineChart';
 import styled from 'styled-components';
+import { Text } from '../shared/Text';
+import getMaxDomainValue from '../../utils/getMaxDomainValue';
 
 export default function TPSLineChart() {
+  const [maxDomainValue, setMaxDomainValue] = useState(0);
   const { simultaneousUser } = useContext(DataContext);
   const data = simultaneousUser.data.map((element) => element.data);
-  const maxDomainValue: number | undefined = max(data, function (d) {
+  const maxDataValue: number | undefined = max(data, function (d) {
     return d;
   });
-  console.log(simultaneousUser);
+
   const xDomain = [Date.now() - 1000 * 60 * 10, Date.now()];
-  const yDomain = [0, maxDomainValue ? (maxDomainValue * 4) / 3 : 100];
+  const yDomain = [0, maxDataValue ? maxDomainValue : 1200];
 
   const format = '%H:%M';
   const xTick = 2;
-  const chartName = '동시접속 사용자';
+
+  useEffect(() => {
+    if (maxDataValue) {
+      const value = getMaxDomainValue(maxDataValue);
+
+      if (value) {
+        setMaxDomainValue(value);
+      }
+    }
+  }, [data]);
 
   return (
     <LineChartContainer>
       <LineChartWrapper>
+        <Text>동시접속 사용자</Text>
         <LineChart
           axisData={simultaneousUser.data}
           data={data}
@@ -28,7 +41,7 @@ export default function TPSLineChart() {
           yDomain={yDomain}
           format={format}
           xTick={xTick}
-          chartName={chartName}
+          maxDomainValue={maxDomainValue}
         />
       </LineChartWrapper>
     </LineChartContainer>
