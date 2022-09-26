@@ -107,6 +107,19 @@ function reducer(state: State, action: Action) {
       return nextState;
     }
 
+    case DataActionTypes.UPDATE_SIMULTANEOUS_USER: {
+      const date = Date.now();
+      const dataWithTimeStamp = { timeStamp: date, data: Number(action.data) };
+
+      const nextState = produce(state, (draft: State) => {
+        draft.simultaneousUser.data.push(dataWithTimeStamp);
+
+        if (draft.simultaneousUser.data.length > 120) draft.simultaneousUser.data.shift();
+      });
+
+      return nextState;
+    }
+
     default:
       return state;
   }

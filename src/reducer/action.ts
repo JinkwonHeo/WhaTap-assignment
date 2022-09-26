@@ -69,3 +69,10 @@ export const updateActiveSocket = (data: number) => {
     data,
   };
 };
+
+export const updateSimultaneousUser = (data: number) => {
+  return {
+    type: DataActionTypes.UPDATE_SIMULTANEOUS_USER,
+    data,
+  };
+};

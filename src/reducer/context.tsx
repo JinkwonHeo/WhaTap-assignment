@@ -43,6 +43,10 @@ const INITIAL_STATE = {
     data: 0,
     error: '',
   },
+  simultaneousUser: {
+    data: [],
+    error: '',
+  },
 };
 
 export const DataContext = createContext<State>(INITIAL_STATE);
