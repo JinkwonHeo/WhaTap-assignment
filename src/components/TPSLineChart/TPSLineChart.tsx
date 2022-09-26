@@ -18,7 +18,6 @@ export default function TPSLineChart() {
   const yDomain = [0, maxDomainValue ? maxDomainValue : 1200];
 
   const format = '%H:%M';
-  const xTick = 2;
 
   useEffect(() => {
     if (maxDataValue) {
@@ -40,7 +39,6 @@ export default function TPSLineChart() {
           xDomain={xDomain}
           yDomain={yDomain}
           format={format}
-          xTick={xTick}
           maxDomainValue={maxDomainValue}
         />
       </LineChartWrapper>
