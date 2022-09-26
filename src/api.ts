@@ -41,7 +41,10 @@ const OPEN_API: IParamType = {
     'transaction/{stime}/{etime}': 'Transaction 발생',
     'thread_count/{stime}/{etime}': 'thread_count',
     'thread_count/{stime}/{etime}/avg': 'thread_count average',
-    'visitor_5m/{stime}/{etime}': '액티브 사용자(5분 단위)',
+    'visitor_5m/{stime}/{etime}': '5분간 집계된 고유 사용자',
+    'visitor_h/{stime}/{etime}': '1시간 동안 집계된 고유 사용자 통계',
+    'visitor_d/{stime}/{etime}': '1일간 집계된 고유 사용자 통계',
+    'httpc/{stime}/{etime}': 'http 외부 호출',
     project: 'Project 정보',
   },
 };

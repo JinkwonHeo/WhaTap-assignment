@@ -12,6 +12,7 @@ type State = {
   activeHttpc: IActiveHttpc;
   activeDbc: IActiveDbc;
   activeSocket: IActiveSocket;
+  simultaneousUser: ISimultaneousUser;
 };
 
 type Action =
@@ -70,6 +71,11 @@ interface IActiveSocketUpdateAction {
   data: number;
 }
 
+interface ISimultaneousUserUpdateAction {
+  type: DataActionTypes.UPDATE_SIMULTANEOUS_USER;
+  data: number;
+}
+
 type DataDispatch = Dispatch<Action>;
 
 interface ITps {
@@ -117,6 +123,14 @@ interface IActiveDbc {
 
 interface IActiveSocket {
   data: number;
+  error?: string;
+}
+
+interface ISimultaneousUser {
+  data: {
+    timeStamp: number;
+    data: number;
+  }[];
   error?: string;
 }
 

@@ -9,34 +9,34 @@ import {
   scaleTime,
   timeMinute,
   timeFormat,
-  max,
+  range,
 } from 'd3';
 import useResizeObserver from '../../hooks/useResizeOBserver';
 import styled from 'styled-components';
-import { ITps } from '../../reducer/types';
-import { Text } from '../shared/Text';
+import { IAxisData } from './type';
 
 export default function LineChart({
-  tps,
+  axisData,
   data,
   xDomain,
   yDomain,
   format,
   xTick,
+  maxDomainValue,
+  tickValue,
 }: {
-  tps: ITps;
+  axisData: IAxisData[];
   data: number[];
   xDomain: number[];
   yDomain: number[];
   format: string;
   xTick: number;
+  maxDomainValue: number;
+  tickValue?: number[];
 }) {
-  const svgRef = useRef(null);
+  const svgRef = useRef<SVGSVGElement>(null);
   const wrappedRef = useRef(null);
   const dimensions = useResizeObserver(wrappedRef);
-  const maxDomainValue: any = max(data, function (d) {
-    return d;
-  });
 
   useEffect(() => {
     const svg = select(svgRef.current);
@@ -58,10 +58,26 @@ export default function LineChart({
       .tickFormat(timeFormat(format))
       .ticks(timeMinute.every(xTick))
       .tickSizeOuter(0);
-    const yAxis: any = axisLeft(yScale).ticks(5).tickSize(0).tickPadding(6).tickSizeOuter(0);
+    const yAxis: any = axisLeft(yScale)
+      .ticks(5)
+      .tickValues(
+        tickValue
+          ? tickValue
+          : range(
+              0,
+              Number(maxDomainValue) + Number(maxDomainValue) / 4,
+              Number(maxDomainValue) / 4
+            )
+      )
+      .tickSize(0)
+      .tickPadding(6)
+      .tickSizeOuter(0);
 
-    svg.select('.x-axis').style('transform', `translateY(${dimensions.height}px)`).call(xAxis);
-    svg.select('.y-axis').style('transform', 'translateX(1px)').call(yAxis);
+    svg
+      .select('.x-axis')
+      .style('transform', `translateX(3px) translateY(${dimensions.height}px)`)
+      .call(xAxis);
+    svg.select('.y-axis').style('transform', 'translateX(3px)').call(yAxis);
 
     svg
       .append('linearGradient')
@@ -70,7 +86,7 @@ export default function LineChart({
       .attr('x1', 0)
       .attr('y1', yScale(0))
       .attr('x2', 0)
-      .attr('y2', yScale(maxDomainValue))
+      .attr('y2', yScale(Number(maxDomainValue)))
       .selectAll('stop')
       .data([
         { offset: '0%', color: '#81b8fc' },
@@ -87,7 +103,7 @@ export default function LineChart({
 
     svg
       .selectAll('.line')
-      .data([tps.data])
+      .data([axisData])
       .join('path')
       .attr('class', 'line')
       .attr('d', lineGenerator)
@@ -97,7 +113,7 @@ export default function LineChart({
 
     svg
       .selectAll('.area')
-      .data([tps.data])
+      .data([axisData])
       .join('path')
       .attr('class', 'area')
       .attr('d', areaGenerator)
@@ -106,7 +122,6 @@ export default function LineChart({
 
   return (
     <>
-      <Text>TPS</Text>
       <SvgWrapper ref={wrappedRef}>
         <LineChartSvg ref={svgRef}>
           <LineChartGroup className="x-axis" />
@@ -118,8 +133,7 @@ export default function LineChart({
 }
 
 const SvgWrapper = styled.div`
-  padding-top: 1.5rem;
-  padding-left: 20px;
+  padding: 1.5rem 0.5rem 0 1.8rem;
 `;
 
 const LineChartSvg = styled.svg`

@@ -8,14 +8,14 @@ import getMaxDomainValue from '../../utils/getMaxDomainValue';
 
 export default function TPSLineChart() {
   const [maxDomainValue, setMaxDomainValue] = useState(0);
-  const { tps } = useContext(DataContext);
-  const data = tps.data.map((element) => element.data);
+  const { simultaneousUser } = useContext(DataContext);
+  const data = simultaneousUser.data.map((element) => element.data);
   const maxDataValue: number | undefined = max(data, function (d) {
     return d;
   });
 
   const xDomain = [Date.now() - 1000 * 60 * 10, Date.now()];
-  const yDomain = [0, maxDomainValue ? maxDomainValue : 1200];
+  const yDomain = [0, maxDataValue ? maxDomainValue : 1200];
 
   const format = '%H:%M';
   const xTick = 2;
@@ -33,9 +33,9 @@ export default function TPSLineChart() {
   return (
     <LineChartContainer>
       <LineChartWrapper>
-        <Text>TPS</Text>
+        <Text>동시접속 사용자</Text>
         <LineChart
-          axisData={tps.data}
+          axisData={simultaneousUser.data}
           data={data}
           xDomain={xDomain}
           yDomain={yDomain}

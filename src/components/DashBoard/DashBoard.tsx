@@ -10,6 +10,7 @@ import {
   updateCpuCore,
   updateHosts,
   updateInActAgent,
+  updateSimultaneousUser,
   updateTpsData,
 } from '../../reducer/action';
 import api from '../../api';
@@ -19,12 +20,15 @@ import Informatics from '../Informatics/Informatics';
 import ActiveStatusBarChart from '../ActiveStatusBarChart/ActiveStatusBarChart';
 import { WidgetContainer } from '../shared/WidgetContainer';
 import { Container } from '../shared/Container';
+import ApiTest from '../ApiTest';
+import SimultaneousUserLineChart from '../SimultaneousUserLineChart/SimultaneousUserLineChart';
 
 export default function DashBoard() {
   const dispatch = useContext(DispatchContext);
 
   async function fetchApi() {
     const tpsData = await api.spot('tps');
+    const simultaneousUser = await api.spot('user');
     const actAgentData = await api.spot('act_agent');
     const inActAgentData = await api.spot('inact_agent');
     const cpuCoreData = await api.spot('cpucore');
@@ -45,6 +49,7 @@ export default function DashBoard() {
     dispatch(updateActiveHttpc(activeHttpcData.data));
     dispatch(updateActiveDbc(activeDbcData.data));
     dispatch(updateActiveSocket(activeSocketData.data));
+    dispatch(updateSimultaneousUser(simultaneousUser.data));
   }
 
   useEffect(() => {
@@ -63,7 +68,11 @@ export default function DashBoard() {
         <WidgetContainer>
           <TPSLineChart />
         </WidgetContainer>
+        <WidgetContainer>
+          <SimultaneousUserLineChart />
+        </WidgetContainer>
       </Container>
+      <ApiTest />
     </>
   );
 }
