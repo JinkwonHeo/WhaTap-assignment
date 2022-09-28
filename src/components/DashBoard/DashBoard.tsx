@@ -11,6 +11,7 @@ import {
   updateHosts,
   updateInActAgent,
   updateSimultaneousUser,
+  updateTodayUsers,
   updateTpsData,
   updateYesterdayUsers,
 } from '../../reducer/action';
@@ -41,8 +42,8 @@ export default function DashBoard() {
     const activeDbcData = await api.spot('act_dbc');
     const activeSocketData = await api.spot('act_socket');
     const yesterdayUsers = await api.series('visitor_5m/{stime}/{etime}', {
-      stime: TODAY_MIDNIGHT - DAY * 2,
-      etime: TODAY_MIDNIGHT - DAY,
+      stime: TODAY_MIDNIGHT - DAY,
+      etime: TODAY_MIDNIGHT,
     });
     const todayUsers = await api.series('visitor_5m/{stime}/{etime}', {
       stime: TODAY_MIDNIGHT,
@@ -61,6 +62,7 @@ export default function DashBoard() {
     dispatch(updateActiveDbc(activeDbcData.data));
     dispatch(updateActiveSocket(activeSocketData.data));
     dispatch(updateYesterdayUsers(yesterdayUsers.data.data));
+    dispatch(updateTodayUsers(todayUsers.data.data));
   }
 
   useEffect(() => {

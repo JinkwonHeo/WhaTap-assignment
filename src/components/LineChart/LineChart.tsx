@@ -22,7 +22,6 @@ export default function LineChart({
   data,
   xDomain,
   yDomain,
-  format,
   maxDomainValue,
   tickValue,
   isSeries,
@@ -31,7 +30,6 @@ export default function LineChart({
   data: number[];
   xDomain: number[];
   yDomain: number[];
-  format: string;
   maxDomainValue?: number;
   tickValue?: number[];
   isSeries?: boolean;
@@ -61,7 +59,7 @@ export default function LineChart({
       .y1((value) => yScale(isSeries ? value[1] : value.data));
 
     const xAxis: any = axisBottom<Date>(xScale)
-      .tickFormat(timeFormat(format))
+      .tickFormat(timeFormat('%H:%M'))
       .ticks(isSeries ? timeHour.every(4) : timeMinute.every(2))
       .tickSizeOuter(0);
     const yAxis: any = axisLeft(yScale)
@@ -121,6 +119,26 @@ export default function LineChart({
       .attr('class', 'area')
       .attr('d', areaGenerator)
       .attr('fill', isSeries ? '#e5e5e5' : 'url(#line-gradient)');
+
+    if (isSeries) {
+      svg
+        .selectAll('.sub-line')
+        .data([data])
+        .join('path')
+        .attr('class', 'sub-line')
+        .attr('d', lineGenerator)
+        .attr('fill', 'none')
+        .attr('stroke', '#4897F8')
+        .attr('stroke-width', 3);
+
+      svg
+        .selectAll('.sub-area')
+        .data([data])
+        .join('path')
+        .attr('class', 'sub-area')
+        .attr('d', areaGenerator)
+        .attr('fill', 'url(#line-gradient)');
+    }
   }, [data, dimensions]);
 
   return (

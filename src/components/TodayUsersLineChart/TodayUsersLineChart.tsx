@@ -3,19 +3,19 @@ import { DataContext } from '../../reducer/context';
 import LineChart from '../LineChart/LineChart';
 import styled from 'styled-components';
 import { Text } from '../shared/Text';
+import { TODAY_MIDNIGHT, DAY } from '../../constants';
 
 export default function TodayUsersLineChart() {
-  const { yesterdayUsers } = useContext(DataContext);
-  const data = yesterdayUsers.data.map((element: number[]) => element[1]);
-  const TODAY_MIDNIGHT = new Date().setHours(0, 0, 0);
-  const DAY = 1000 * 60 * 60 * 24;
-  const isSeries = true;
+  const { yesterdayUsers, todayUsers } = useContext(DataContext);
+  const data = todayUsers.data.map((element: number[], index: number) => [
+    yesterdayUsers.data[index][0],
+    element[1],
+  ]);
 
-  const xDomain = [TODAY_MIDNIGHT - DAY * 2, TODAY_MIDNIGHT - DAY];
+  const xDomain = [TODAY_MIDNIGHT - DAY, TODAY_MIDNIGHT];
   const yDomain = [0, 1200];
   const tickValue = [0, 300, 600, 900, 1200];
-
-  const format = '%H:%M';
+  const isSeries = true;
 
   return (
     <LineChartContainer>
@@ -26,7 +26,6 @@ export default function TodayUsersLineChart() {
           data={data}
           xDomain={xDomain}
           yDomain={yDomain}
-          format={format}
           tickValue={tickValue}
           isSeries={isSeries}
         />
