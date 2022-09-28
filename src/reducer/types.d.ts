@@ -13,18 +13,23 @@ type State = {
   activeDbc: IActiveDbc;
   activeSocket: IActiveSocket;
   simultaneousUser: ISimultaneousUser;
+  yesterdayUsers: ITodayYesterdayUser;
+  todayUsers: ITodayYesterdayUser;
 };
 
 type Action =
-  | IUpdateActAgent
-  | IUpdateTpsDataAction
-  | IUpdateInActAgent
-  | ICpuCoreAction
-  | IActiveMethodUpdateAction
-  | IActiveSqlUpdateAction
-  | IActiveHttpcUpdateAction
-  | IActiveDbcUpdateAction
-  | IActiveSocketUpdateAction;
+  | ReturnType<typeof updateYesterdayUsers>
+  | ReturnType<typeof updateTpsData>
+  | ReturnType<typeof updateActAgent>
+  | ReturnType<typeof updateInActAgent>
+  | ReturnType<typeof updateCpuCore>
+  | ReturnType<typeof updateHosts>
+  | ReturnType<typeof updateActiveMethod>
+  | ReturnType<typeof updateActiveSql>
+  | ReturnType<typeof updateActiveHttpc>
+  | ReturnType<typeof updateActiveDbc>
+  | ReturnType<typeof updateActiveSocket>
+  | ReturnType<typeof updateSimultaneousUser>;
 
 interface IUpdateTpsDataAction {
   type: DataActionTypes.UPDATE_TPS_DATA;
@@ -74,6 +79,11 @@ interface IActiveSocketUpdateAction {
 interface ISimultaneousUserUpdateAction {
   type: DataActionTypes.UPDATE_SIMULTANEOUS_USER;
   data: number;
+}
+
+interface IYesterdayUsersUpdateAction {
+  type: DataActionTypes.UPDATE_YESTERDAY_USERS;
+  data: [number, number][];
 }
 
 type DataDispatch = Dispatch<Action>;
@@ -131,6 +141,11 @@ interface ISimultaneousUser {
     timeStamp: number;
     data: number;
   }[];
+  error?: string;
+}
+
+interface ITodayYesterdayUser {
+  data: any;
   error?: string;
 }
 

@@ -120,6 +120,22 @@ function reducer(state: State, action: Action) {
       return nextState;
     }
 
+    case DataActionTypes.UPDATE_YESTERDAY_USERS: {
+      const nextState = produce(state, (draft: State) => {
+        draft.yesterdayUsers.data = action.data;
+      });
+
+      return nextState;
+    }
+
+    case DataActionTypes.UPDATE_TODAY_USERS: {
+      const nextState = produce(state, (draft: State) => {
+        draft.todayUsers.data = action.data;
+      });
+
+      return nextState;
+    }
+
     default:
       return state;
   }

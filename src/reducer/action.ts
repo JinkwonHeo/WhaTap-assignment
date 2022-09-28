@@ -76,3 +76,13 @@ export const updateSimultaneousUser = (data: number) => {
     data,
   };
 };
+
+export const updateYesterdayUsers = (data: [number, number][]) => ({
+  type: DataActionTypes.UPDATE_YESTERDAY_USERS,
+  data,
+});
+
+export const updateTodayUsers = (data: [number, number][]) => ({
+  type: DataActionTypes.UPDATE_TODAY_USERS,
+  data,
+});

@@ -10,6 +10,8 @@ import {
   timeMinute,
   timeFormat,
   range,
+  max,
+  timeHour,
 } from 'd3';
 import useResizeObserver from '../../hooks/useResizeOBserver';
 import styled from 'styled-components';
@@ -20,43 +22,45 @@ export default function LineChart({
   data,
   xDomain,
   yDomain,
-  format,
-  xTick,
   maxDomainValue,
   tickValue,
+  isSeries,
 }: {
   axisData: IAxisData[];
   data: number[];
   xDomain: number[];
   yDomain: number[];
-  format: string;
-  xTick: number;
-  maxDomainValue: number;
+  maxDomainValue?: number;
   tickValue?: number[];
+  isSeries?: boolean;
 }) {
   const svgRef = useRef<SVGSVGElement>(null);
   const wrappedRef = useRef(null);
   const dimensions = useResizeObserver(wrappedRef);
+
+  const gradientScaleValue: any = max(data, function (d) {
+    return d;
+  });
 
   useEffect(() => {
     const svg = select(svgRef.current);
     if (!dimensions) return;
 
     const lineGenerator = line<any>()
-      .x((value) => xScale(value.timeStamp))
-      .y((value) => yScale(value.data));
+      .x((value) => xScale(isSeries ? value[0] : value.timeStamp))
+      .y((value) => yScale(isSeries ? value[1] : value.data));
 
     const xScale = scaleTime().domain(xDomain).range([0, dimensions.width]);
     const yScale = scaleLinear().domain(yDomain).range([dimensions.height, 0]);
 
     const areaGenerator = area<any>()
-      .x((value) => xScale(value.timeStamp))
+      .x((value) => xScale(isSeries ? value[0] : value.timeStamp))
       .y0(yScale(0))
-      .y1((value) => yScale(value.data));
+      .y1((value) => yScale(isSeries ? value[1] : value.data));
 
     const xAxis: any = axisBottom<Date>(xScale)
-      .tickFormat(timeFormat(format))
-      .ticks(timeMinute.every(xTick))
+      .tickFormat(timeFormat('%H:%M'))
+      .ticks(isSeries ? timeHour.every(4) : timeMinute.every(2))
       .tickSizeOuter(0);
     const yAxis: any = axisLeft(yScale)
       .ticks(5)
@@ -73,11 +77,8 @@ export default function LineChart({
       .tickPadding(6)
       .tickSizeOuter(0);
 
-    svg
-      .select('.x-axis')
-      .style('transform', `translateX(3px) translateY(${dimensions.height}px)`)
-      .call(xAxis);
-    svg.select('.y-axis').style('transform', 'translateX(3px)').call(yAxis);
+    svg.select('.x-axis').style('transform', `translateY(${dimensions.height}px)`).call(xAxis);
+    svg.select('.y-axis').call(yAxis);
 
     svg
       .append('linearGradient')
@@ -86,7 +87,7 @@ export default function LineChart({
       .attr('x1', 0)
       .attr('y1', yScale(0))
       .attr('x2', 0)
-      .attr('y2', yScale(Number(maxDomainValue)))
+      .attr('y2', yScale(gradientScaleValue))
       .selectAll('stop')
       .data([
         { offset: '0%', color: '#81b8fc' },
@@ -108,7 +109,7 @@ export default function LineChart({
       .attr('class', 'line')
       .attr('d', lineGenerator)
       .attr('fill', 'none')
-      .attr('stroke', '#4897F8')
+      .attr('stroke', isSeries ? '#999999' : '#4897F8')
       .attr('stroke-width', 3);
 
     svg
@@ -117,7 +118,27 @@ export default function LineChart({
       .join('path')
       .attr('class', 'area')
       .attr('d', areaGenerator)
-      .attr('fill', 'url(#line-gradient)');
+      .attr('fill', isSeries ? '#e5e5e5' : 'url(#line-gradient)');
+
+    if (isSeries) {
+      svg
+        .selectAll('.sub-line')
+        .data([data])
+        .join('path')
+        .attr('class', 'sub-line')
+        .attr('d', lineGenerator)
+        .attr('fill', 'none')
+        .attr('stroke', '#4897F8')
+        .attr('stroke-width', 3);
+
+      svg
+        .selectAll('.sub-area')
+        .data([data])
+        .join('path')
+        .attr('class', 'sub-area')
+        .attr('d', areaGenerator)
+        .attr('fill', 'url(#line-gradient)');
+    }
   }, [data, dimensions]);
 
   return (

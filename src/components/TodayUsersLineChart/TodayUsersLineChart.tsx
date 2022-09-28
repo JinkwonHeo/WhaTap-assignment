@@ -1,42 +1,33 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { DataContext } from '../../reducer/context';
-import { max } from 'd3';
 import LineChart from '../LineChart/LineChart';
 import styled from 'styled-components';
 import { Text } from '../shared/Text';
-import getMaxDomainValue from '../../utils/getMaxDomainValue';
+import { TODAY_MIDNIGHT, DAY } from '../../constants';
 
-export default function TPSLineChart() {
-  const [maxDomainValue, setMaxDomainValue] = useState(0);
-  const { tps } = useContext(DataContext);
-  const data = tps.data.map((element) => element.data);
-  const maxDataValue: number | undefined = max(data, function (d) {
-    return d;
-  });
+export default function TodayUsersLineChart() {
+  const { yesterdayUsers, todayUsers } = useContext(DataContext);
+  const data = todayUsers.data.map((element: number[], index: number) => [
+    yesterdayUsers.data[index][0],
+    element[1],
+  ]);
 
-  const xDomain = [Date.now() - 1000 * 60 * 10, Date.now()];
-  const yDomain = [0, maxDomainValue ? maxDomainValue : 1200];
-
-  useEffect(() => {
-    if (maxDataValue) {
-      const value = getMaxDomainValue(maxDataValue);
-
-      if (value) {
-        setMaxDomainValue(value);
-      }
-    }
-  }, [data]);
+  const xDomain = [TODAY_MIDNIGHT - DAY, TODAY_MIDNIGHT];
+  const yDomain = [0, 1200];
+  const tickValue = [0, 300, 600, 900, 1200];
+  const isSeries = true;
 
   return (
     <LineChartContainer>
       <LineChartWrapper>
-        <Text>TPS</Text>
+        <Text>금일 사용자</Text>
         <LineChart
-          axisData={tps.data}
+          axisData={yesterdayUsers.data}
           data={data}
           xDomain={xDomain}
           yDomain={yDomain}
-          maxDomainValue={maxDomainValue}
+          tickValue={tickValue}
+          isSeries={isSeries}
         />
       </LineChartWrapper>
     </LineChartContainer>
