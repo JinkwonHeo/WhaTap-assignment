@@ -13,7 +13,8 @@ type State = {
   activeDbc: IActiveDbc;
   activeSocket: IActiveSocket;
   simultaneousUser: ISimultaneousUser;
-  yesterdayUsers: IYesterdayUsers;
+  yesterdayUsers: ITodayYesterdayUser;
+  todayUsers: ITodayYesterdayUser;
 };
 
 type Action =
@@ -143,7 +144,7 @@ interface ISimultaneousUser {
   error?: string;
 }
 
-interface IYesterdayUsers {
+interface ITodayYesterdayUser {
   data: any;
   error?: string;
 }

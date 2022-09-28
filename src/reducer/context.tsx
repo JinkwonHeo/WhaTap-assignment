@@ -51,6 +51,10 @@ const INITIAL_STATE = {
     data: [],
     error: '',
   },
+  todayUsers: {
+    data: [],
+    error: '',
+  },
 };
 
 export const DataContext = createContext<State>(INITIAL_STATE);
