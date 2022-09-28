@@ -7,40 +7,37 @@ const INITIAL_STATE = {
     data: [],
     error: '',
   },
-  actAgent: {
-    data: 0,
+  informatics: {
+    actAgent: {
+      data: 0,
+    },
+    inActAgent: {
+      data: 0,
+    },
+    cpuCore: {
+      data: 0,
+    },
+    hosts: {
+      data: 0,
+    },
     error: '',
   },
-  inActAgent: {
-    data: 0,
-    error: '',
-  },
-  cpuCore: {
-    data: 0,
-    error: '',
-  },
-  hosts: {
-    data: 0,
-    error: '',
-  },
-  activeMethod: {
-    data: 0,
-    error: '',
-  },
-  activeSql: {
-    data: 0,
-    error: '',
-  },
-  activeHttpc: {
-    data: 0,
-    error: '',
-  },
-  activeDbc: {
-    data: 0,
-    error: '',
-  },
-  activeSocket: {
-    data: 0,
+  activeStatus: {
+    activeMethod: {
+      data: 0,
+    },
+    activeSql: {
+      data: 0,
+    },
+    activeHttpc: {
+      data: 0,
+    },
+    activeDbc: {
+      data: 0,
+    },
+    activeSocket: {
+      data: 0,
+    },
     error: '',
   },
   simultaneousUser: {
@@ -55,6 +52,7 @@ const INITIAL_STATE = {
     data: [],
     error: '',
   },
+  isLoading: true,
 };
 
 export const DataContext = createContext<State>(INITIAL_STATE);

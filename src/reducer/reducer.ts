@@ -17,91 +17,17 @@ function reducer(state: State, action: Action) {
       return nextState;
     }
 
-    case DataActionTypes.UPDATE_ACT_AGENT: {
+    case DataActionTypes.UPDATE_INFORMATICS_DATA: {
       const nextState = produce(state, (draft: State) => {
-        if (draft.actAgent.data === action.data) return;
-
-        draft.actAgent.data = action.data;
+        draft.informatics = action.data;
       });
 
       return nextState;
     }
 
-    case DataActionTypes.UPDATE_INACT_AGENT: {
+    case DataActionTypes.UPDATE_ACTIVE_STATUS_DATA: {
       const nextState = produce(state, (draft: State) => {
-        if (draft.inActAgent.data === action.data) return;
-
-        draft.inActAgent.data = action.data;
-      });
-
-      return nextState;
-    }
-
-    case DataActionTypes.UPDATE_CPU_CORE: {
-      const nextState = produce(state, (draft: State) => {
-        if (draft.cpuCore.data === action.data) return;
-
-        draft.cpuCore.data = action.data;
-      });
-
-      return nextState;
-    }
-
-    case DataActionTypes.UPDATE_HOSTS: {
-      const nextState = produce(state, (draft: State) => {
-        if (draft.hosts.data === action.data) return;
-
-        draft.hosts.data = action.data;
-      });
-
-      return nextState;
-    }
-
-    case DataActionTypes.UPDATE_ACTIVE_METHOD: {
-      const nextState = produce(state, (draft: State) => {
-        if (draft.activeMethod.data === action.data) return;
-
-        draft.activeMethod.data = action.data;
-      });
-
-      return nextState;
-    }
-
-    case DataActionTypes.UPDATE_ACTIVE_SQL: {
-      const nextState = produce(state, (draft: State) => {
-        if (draft.activeSql.data === action.data) return;
-
-        draft.activeSql.data = action.data;
-      });
-
-      return nextState;
-    }
-
-    case DataActionTypes.UPDATE_ACTIVE_HTTPC: {
-      const nextState = produce(state, (draft: State) => {
-        if (draft.activeHttpc.data === action.data) return;
-
-        draft.activeHttpc.data = action.data;
-      });
-
-      return nextState;
-    }
-
-    case DataActionTypes.UPDATE_ACTIVE_DBC: {
-      const nextState = produce(state, (draft: State) => {
-        if (draft.activeDbc.data === action.data) return;
-
-        draft.activeDbc.data = action.data;
-      });
-
-      return nextState;
-    }
-
-    case DataActionTypes.UPDATE_ACTIVE_SOCKET: {
-      const nextState = produce(state, (draft: State) => {
-        if (draft.activeSocket.data === action.data) return;
-
-        draft.activeSocket.data = action.data;
+        draft.activeStatus = action.data;
       });
 
       return nextState;

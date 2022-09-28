@@ -6,7 +6,9 @@ import { IBarChartData } from '../BarChart/type';
 import styled from 'styled-components';
 
 export default function ActiveStatusBarChart() {
-  const { activeMethod, activeSql, activeHttpc, activeDbc, activeSocket } = useContext(DataContext);
+  const { activeStatus } = useContext(DataContext);
+  const { activeMethod, activeSql, activeHttpc, activeDbc, activeSocket } = activeStatus;
+
   const data: IBarChartData[] = [
     {
       name: 'METHOD',
