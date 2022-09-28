@@ -7,18 +7,19 @@ function useInterval(callback: SetStateAction<any>, delay: number) {
     savedCallback.current = callback;
   }, [callback]);
 
-  useEffect(() => {
-    function tick() {
-      if (savedCallback.current) {
-        savedCallback.current(null);
-      }
+  let id = setTimeout(tick, delay);
+
+  function tick() {
+    if (savedCallback.current) {
+      savedCallback.current(null);
     }
+
     if (delay !== null) {
-      const id = setInterval(tick, delay);
+      id = setTimeout(tick, delay);
 
       return () => clearInterval(id);
     }
-  }, [delay]);
+  }
 }
 
 export default useInterval;
