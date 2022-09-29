@@ -3,7 +3,8 @@ import { DataContext } from '../../reducer/context';
 import styled from 'styled-components';
 
 export default function Informatics() {
-  const { actAgent, inActAgent, cpuCore, hosts } = useContext(DataContext);
+  const { informatics } = useContext(DataContext);
+  const { actAgent, inActAgent, cpuCore, hosts } = informatics;
 
   const informaticsData: { name: string; value: number }[] = [
     { name: '애플리케이션 서버', value: actAgent.data },

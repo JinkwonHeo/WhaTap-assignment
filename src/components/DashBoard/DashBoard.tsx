@@ -1,15 +1,8 @@
 import { useContext, useEffect } from 'react';
 import { DispatchContext } from '../../reducer/context';
 import {
-  updateActAgent,
-  updateActiveDbc,
-  updateActiveHttpc,
-  updateActiveMethod,
-  updateActiveSocket,
-  updateActiveSql,
-  updateCpuCore,
-  updateHosts,
-  updateInActAgent,
+  updateActiveStatus,
+  updateInformatics,
   updateSimultaneousUser,
   updateTodayUsers,
   updateTpsData,
@@ -49,20 +42,47 @@ export default function DashBoard() {
       stime: TODAY_MIDNIGHT,
       etime: Date.now(),
     });
+    const informaticsData = {
+      actAgent: {
+        data: actAgentData.data,
+      },
+      inActAgent: {
+        data: inActAgentData.data,
+      },
+      cpuCore: {
+        data: cpuCoreData.data,
+      },
+      hosts: {
+        data: hostsData.data,
+      },
+      error: '',
+    };
+
+    const activeStatusData = {
+      activeMethod: {
+        data: activeMethodData.data,
+      },
+      activeSql: {
+        data: activeSqlData.data,
+      },
+      activeHttpc: {
+        data: activeHttpcData.data,
+      },
+      activeDbc: {
+        data: activeDbcData.data,
+      },
+      activeSocket: {
+        data: activeSocketData.data,
+      },
+      error: '',
+    };
 
     dispatch(updateTpsData(tpsData.data));
     dispatch(updateSimultaneousUser(simultaneousUser.data));
-    dispatch(updateActAgent(actAgentData.data));
-    dispatch(updateInActAgent(inActAgentData.data));
-    dispatch(updateCpuCore(cpuCoreData.data));
-    dispatch(updateHosts(hostsData.data));
-    dispatch(updateActiveMethod(activeMethodData.data));
-    dispatch(updateActiveSql(activeSqlData.data));
-    dispatch(updateActiveHttpc(activeHttpcData.data));
-    dispatch(updateActiveDbc(activeDbcData.data));
-    dispatch(updateActiveSocket(activeSocketData.data));
     dispatch(updateYesterdayUsers(yesterdayUsers.data.data));
     dispatch(updateTodayUsers(todayUsers.data.data));
+    dispatch(updateInformatics(informaticsData));
+    dispatch(updateActiveStatus(activeStatusData));
   }
 
   useEffect(() => {
