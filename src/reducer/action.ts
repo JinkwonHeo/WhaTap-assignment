@@ -38,3 +38,10 @@ export const updateTodayUsers = (data: [number, number][]) => ({
   type: DataActionTypes.UPDATE_TODAY_USERS,
   data,
 });
+
+export const updateLoadingStatus = (data: boolean) => {
+  return {
+    type: DataActionTypes.UPDATE_LOADING_STATUS,
+    data,
+  };
+};
