@@ -62,6 +62,14 @@ function reducer(state: State, action: Action) {
       return nextState;
     }
 
+    case DataActionTypes.UPDATE_LOADING_STATUS: {
+      const nextState = produce(state, (draft: State) => {
+        draft.isLoading = action.data;
+      });
+
+      return nextState;
+    }
+
     default:
       return state;
   }
