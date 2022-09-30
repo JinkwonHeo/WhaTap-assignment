@@ -38,42 +38,20 @@ interface ITps {
     timeStamp: number;
     data: number;
   }[];
+  key: string;
   error?: string;
 }
 
 interface IInformatics {
-  actAgent: {
-    data: number;
-  };
-  inActAgent: {
-    data: number;
-  };
-  cpuCore: {
-    data: number;
-  };
-  hosts: {
-    data: number;
-  };
+  data: number[];
+  key: string;
   error?: string;
 }
 
 interface IActiveStatus {
-  activeMethod: {
-    data: number;
-  };
-  activeSql: {
-    data: number;
-  };
-  activeHttpc: {
-    data: number;
-  };
-  activeDbc: {
-    data: number;
-  };
-  activeSocket: {
-    data: number;
-  };
-  error: string;
+  data: number[];
+  key: string;
+  error?: string;
 }
 
 interface ISimultaneousUser {
@@ -81,12 +59,20 @@ interface ISimultaneousUser {
     timeStamp: number;
     data: number;
   }[];
+  key: string;
   error?: string;
 }
 
 interface ITodayYesterdayUser {
   data: any;
+  key: string;
   error?: string;
 }
 
-export { State, Action, DataDispatch, ITps, IActiveStatus, IInformatics };
+interface IFetchedData {
+  key: string[];
+  fetchName: string;
+  promiseAllResponse: any[];
+}
+
+export { State, Action, DataDispatch, ITps, IActiveStatus, IInformatics, IFetchedData };

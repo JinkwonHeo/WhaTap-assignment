@@ -1,14 +1,6 @@
 import { useContext, useLayoutEffect } from 'react';
 import { DataContext, DispatchContext } from '../../reducer/context';
-import {
-  updateActiveStatus,
-  updateInformatics,
-  updateLoadingStatus,
-  updateSimultaneousUser,
-  updateTodayUsers,
-  updateTpsData,
-  updateYesterdayUsers,
-} from '../../reducer/action';
+import { updateLoadingStatus, updateSeriesData, updateSpotData } from '../../reducer/action';
 import api from '../../api';
 import TPSLineChart from '../TPSLineChart/TPSLineChart';
 import Informatics from '../Informatics/Informatics';
@@ -22,90 +14,163 @@ import { TODAY_MIDNIGHT, DAY } from '../../constants';
 export default function DashBoard() {
   const dispatch = useContext(DispatchContext);
   const { isLoading } = useContext(DataContext);
+  const queue: {
+    fetchType: string;
+    fetchName: string;
+    promiseAllKey: string[];
+    params?: { stime: number; etime: number };
+  }[] = [
+    {
+      fetchType: 'spot',
+      fetchName: 'tps',
+      promiseAllKey: ['tps'],
+    },
+    {
+      fetchType: 'spot',
+      fetchName: 'user',
+      promiseAllKey: ['user'],
+    },
+    {
+      fetchType: 'spot',
+      fetchName: 'activeStatus',
+      promiseAllKey: ['act_method', 'act_sql', 'act_httpc', 'act_dbc', 'act_socket'],
+    },
+    {
+      fetchType: 'series',
+      fetchName: 'todayUsers',
+      promiseAllKey: ['visitor_5m/{stime}/{etime}'],
+      params: {
+        stime: TODAY_MIDNIGHT,
+        etime: Date.now(),
+      },
+    },
+    {
+      fetchType: 'spot',
+      fetchName: 'informatics',
+      promiseAllKey: ['act_agent', 'inact_agent', 'cpucore', 'host'],
+    },
+  ];
 
   async function fetchInitial() {
-    fetchApi();
-    const yesterdayUsers = await api.series('visitor_5m/{stime}/{etime}', {
+    const yesterdayUsers = await api.series(['visitor_5m/{stime}/{etime}'], 'yesterdayUsers', {
       stime: TODAY_MIDNIGHT - DAY,
       etime: TODAY_MIDNIGHT,
     });
 
-    dispatch(updateYesterdayUsers(yesterdayUsers?.data.data));
+    if (yesterdayUsers) {
+      dispatch(updateSeriesData(yesterdayUsers));
+
+      return setTimeout(fetchApi, 300);
+    }
   }
 
-  async function fetchApi() {
-    const tpsData = await api.spot('tps');
-    const simultaneousUser = await api.spot('user');
-    const actAgentData = await api.spot('act_agent');
-    const inActAgentData = await api.spot('inact_agent');
-    const cpuCoreData = await api.spot('cpucore');
-    const hostsData = await api.spot('host');
-    const activeMethodData = await api.spot('act_method');
-    const activeSqlData = await api.spot('act_sql');
-    const activeHttpcData = await api.spot('act_httpc');
-    const activeDbcData = await api.spot('act_dbc');
-    const activeSocketData = await api.spot('act_socket');
-    const todayUsers = await api.series('visitor_5m/{stime}/{etime}', {
-      stime: TODAY_MIDNIGHT,
-      etime: Date.now(),
-    });
+  async function fetchApi(): Promise<any> {
+    if (queue.length) {
+      const queuedData = queue.shift()!;
 
-    const informaticsData = {
-      actAgent: {
-        data: actAgentData?.data,
-      },
-      inActAgent: {
-        data: inActAgentData?.data,
-      },
-      cpuCore: {
-        data: cpuCoreData?.data,
-      },
-      hosts: {
-        data: hostsData?.data,
-      },
-      error: '',
-    };
+      if (queuedData.fetchType === 'spot') {
+        const fetchedData = await api.spot(queuedData.promiseAllKey, queuedData.fetchName);
 
-    const activeStatusData = {
-      activeMethod: {
-        data: activeMethodData?.data,
-      },
-      activeSql: {
-        data: activeSqlData?.data,
-      },
-      activeHttpc: {
-        data: activeHttpcData?.data,
-      },
-      activeDbc: {
-        data: activeDbcData?.data,
-      },
-      activeSocket: {
-        data: activeSocketData?.data,
-      },
-      error: '',
-    };
+        if (fetchedData) {
+          dispatch(updateSpotData(fetchedData));
 
-    dispatch(updateTpsData(tpsData?.data));
-    dispatch(updateSimultaneousUser(simultaneousUser?.data));
-    dispatch(updateTodayUsers(todayUsers?.data.data));
-    dispatch(updateInformatics(informaticsData));
-    dispatch(updateActiveStatus(activeStatusData));
+          return setTimeout(fetchApi, 300);
+        }
+      }
+
+      if (queuedData.fetchType === 'series') {
+        const fetchedData = await api.series(
+          queuedData.promiseAllKey,
+          queuedData.fetchName,
+          queuedData.params
+        );
+
+        if (fetchedData) {
+          dispatch(updateSeriesData(fetchedData));
+
+          return setTimeout(fetchApi, 300);
+        }
+      }
+    }
     dispatch(updateLoadingStatus(false));
   }
 
   useLayoutEffect(() => {
     const abortController = new AbortController();
-    fetchInitial();
+    try {
+      fetchInitial();
 
-    let timerId = setTimeout(function tick() {
-      fetchApi();
-      timerId = setTimeout(tick, 5000);
-    }, 5000);
+      let timerId = setTimeout(function tick() {
+        queue.push({
+          fetchType: 'spot',
+          fetchName: 'tps',
+          promiseAllKey: ['tps'],
+        });
 
-    return () => {
-      abortController.abort();
-      clearTimeout(timerId);
-    };
+        queue.push({
+          fetchType: 'spot',
+          fetchName: 'user',
+          promiseAllKey: ['user'],
+        });
+
+        queue.push({
+          fetchType: 'spot',
+          fetchName: 'activeStatus',
+          promiseAllKey: ['act_method', 'act_sql', 'act_httpc', 'act_dbc', 'act_socket'],
+        });
+
+        queue.push({
+          fetchType: 'spot',
+          fetchName: 'informatics',
+          promiseAllKey: ['act_agent', 'inact_agent', 'cpucore', 'host'],
+        });
+
+        fetchApi();
+        timerId = setTimeout(tick, 5000);
+      }, 5000);
+
+      return () => {
+        abortController.abort();
+        clearTimeout(timerId);
+      };
+    } catch (error) {
+      console.log(123123);
+      queue.length = 0;
+      console.error(error);
+      let timerId = setTimeout(function tick() {
+        queue.push({
+          fetchType: 'spot',
+          fetchName: 'tps',
+          promiseAllKey: ['tps'],
+        });
+
+        queue.push({
+          fetchType: 'spot',
+          fetchName: 'user',
+          promiseAllKey: ['user'],
+        });
+
+        queue.push({
+          fetchType: 'spot',
+          fetchName: 'activeStatus',
+          promiseAllKey: ['act_method', 'act_sql', 'act_httpc', 'act_dbc', 'act_socket'],
+        });
+
+        queue.push({
+          fetchType: 'spot',
+          fetchName: 'informatics',
+          promiseAllKey: ['act_agent', 'inact_agent', 'cpucore', 'host'],
+        });
+
+        fetchApi();
+        timerId = setTimeout(tick, 5000);
+      }, 5000);
+
+      return () => {
+        abortController.abort();
+        clearTimeout(timerId);
+      };
+    }
   }, []);
 
   return (

@@ -70,6 +70,76 @@ function reducer(state: State, action: Action) {
       return nextState;
     }
 
+    case DataActionTypes.UPDATE_SPOT_DATA: {
+      const nextState = produce(state, (draft: State) => {
+        if (action.data.fetchName === 'activeStatus') {
+          draft.activeStatus.data = action.data.promiseAllResponse;
+          draft.activeStatus.key = action.data.fetchName;
+        }
+
+        if (action.data.fetchName === 'informatics') {
+          draft.informatics.data = action.data.promiseAllResponse;
+          draft.informatics.key = action.data.fetchName;
+        }
+
+        if (action.data.fetchName === 'tps') {
+          const date = Date.now();
+          const dataWithTimeStamp = {
+            timeStamp: date,
+            data: isNaN(action.data.promiseAllResponse[0])
+              ? state.tps.data[state.tps.data.length - 1].data
+              : Number(action.data.promiseAllResponse[0]),
+          };
+
+          const nextState = produce(state, (draft: State) => {
+            draft.tps.key = action.data.fetchName;
+            draft.tps.data.push(dataWithTimeStamp);
+
+            if (draft.tps.data.length > 120) draft.tps.data.shift();
+          });
+
+          return nextState;
+        }
+
+        if (action.data.fetchName === 'user') {
+          const date = Date.now();
+          const dataWithTimeStamp = {
+            timeStamp: date,
+            data: isNaN(action.data.promiseAllResponse[0])
+              ? state.simultaneousUser.data[state.simultaneousUser.data.length - 1].data
+              : Number(action.data.promiseAllResponse[0]),
+          };
+
+          const nextState = produce(state, (draft: State) => {
+            draft.simultaneousUser.key = action.data.fetchName;
+            draft.simultaneousUser.data.push(dataWithTimeStamp);
+
+            if (draft.simultaneousUser.data.length > 120) draft.simultaneousUser.data.shift();
+          });
+
+          return nextState;
+        }
+      });
+
+      return nextState;
+    }
+
+    case DataActionTypes.UPDATE_SERIES_DATA: {
+      const nextState = produce(state, (draft: State) => {
+        if (action.data.fetchName === 'yesterdayUsers') {
+          draft.yesterdayUsers.key = action.data.fetchName;
+          draft.yesterdayUsers.data = action.data.promiseAllResponse[0].data;
+        }
+
+        if (action.data.fetchName === 'todayUsers') {
+          draft.todayUsers.key = action.data.fetchName;
+          draft.todayUsers.data = action.data.promiseAllResponse[0].data;
+        }
+      });
+
+      return nextState;
+    }
+
     default:
       return state;
   }

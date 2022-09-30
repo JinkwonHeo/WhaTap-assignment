@@ -7,32 +7,31 @@ import styled from 'styled-components';
 
 export default function ActiveStatusBarChart() {
   const { activeStatus } = useContext(DataContext);
-  const { activeMethod, activeSql, activeHttpc, activeDbc, activeSocket } = activeStatus;
 
   const data: IBarChartData[] = [
     {
       name: 'METHOD',
-      value: activeMethod.data,
+      value: activeStatus.data[0],
       color: '#b7e2fb',
     },
     {
       name: 'SQL',
-      value: activeSql.data,
+      value: activeStatus.data[1],
       color: '#b0eae9',
     },
     {
       name: 'HTTPC',
-      value: activeHttpc.data,
+      value: activeStatus.data[2],
       color: '#ebbdf5',
     },
     {
       name: 'DBC',
-      value: activeDbc.data,
+      value: activeStatus.data[3],
       color: '#f2ccbb',
     },
     {
       name: 'SOCKET',
-      value: activeSocket.data,
+      value: activeStatus.data[4],
       color: '#fa697c',
     },
   ];

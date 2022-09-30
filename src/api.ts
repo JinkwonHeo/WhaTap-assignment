@@ -6,6 +6,7 @@ const OPEN_API_HEADERS = {
 };
 const OPEN_API_ROOT = 'https://service.whatap.io/open/api';
 const requestHeaders: HeadersInit = new Headers(OPEN_API_HEADERS);
+const abortController = new AbortController();
 
 interface IParamType {
   [key: number]: any;
@@ -59,34 +60,40 @@ const getPath = (url: string, param?: IParamType) => {
   return path;
 };
 
-const getOpenApi = (type: string) => async (key: string, param?: IParamType) => {
-  let url = '';
-  let name = '';
+const getOpenApi =
+  (type: string) => async (key: string[], fetchName: string, param?: IParamType) => {
+    let url = [];
 
-  try {
-    if (key in OPEN_API[type]) {
-      if (type === '') {
-        url = [OPEN_API_ROOT, key].join('/');
-        name = OPEN_API[type][key];
-      } else {
-        url = [OPEN_API_ROOT, type, key].join('/');
-        name = OPEN_API[type][key];
+    url = key.map((elem) => {
+      try {
+        if (elem in OPEN_API[type]) {
+          if (type === '') {
+            return [OPEN_API_ROOT, elem].join('/');
+          } else {
+            return [OPEN_API_ROOT, type, elem].join('/');
+          }
+        } else {
+          throw new Error('잘못된 API 정보');
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } else {
-      throw new Error('잘못된 API 정보');
-    }
-  } catch (error) {
-    console.error(error);
-  }
+    });
 
-  const response = await fetch(getPath(url, param), {
-    headers: requestHeaders,
-  });
+    const promiseAllResponse = await Promise.all(
+      url.map(async (element) => {
+        const res = await fetch(getPath(element!, param), {
+          headers: requestHeaders,
+          signal: abortController.signal,
+        });
+        if (res.ok) {
+          return res.json();
+        }
+      })
+    );
 
-  const data = await response.json();
-
-  return { key, name, data };
-};
+    return { key, fetchName, promiseAllResponse };
+  };
 
 const spot = getOpenApi(''); // spot 정보 조회
 const series = getOpenApi('json'); // 통계 정보 조회
