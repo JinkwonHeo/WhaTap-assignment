@@ -4,13 +4,12 @@ import styled from 'styled-components';
 
 export default function Informatics() {
   const { informatics } = useContext(DataContext);
-  const { actAgent, inActAgent, cpuCore, hosts } = informatics;
 
   const informaticsData: { name: string; value: number }[] = [
-    { name: '애플리케이션 서버', value: actAgent.data },
-    { name: '비활성 애플리케이션', value: inActAgent.data },
-    { name: 'CPU 코어', value: cpuCore.data },
-    { name: 'Hosts', value: hosts.data },
+    { name: '애플리케이션 서버', value: informatics.data[0] },
+    { name: '비활성 애플리케이션', value: informatics.data[1] },
+    { name: 'CPU 코어', value: informatics.data[2] },
+    { name: 'Hosts', value: informatics.data[3] },
   ];
 
   return (
