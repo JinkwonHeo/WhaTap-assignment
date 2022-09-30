@@ -5,51 +5,32 @@ import { State, DataDispatch } from './types';
 const INITIAL_STATE = {
   tps: {
     data: [],
+    key: '',
     error: '',
   },
   informatics: {
-    actAgent: {
-      data: 0,
-    },
-    inActAgent: {
-      data: 0,
-    },
-    cpuCore: {
-      data: 0,
-    },
-    hosts: {
-      data: 0,
-    },
+    data: [],
+    key: '',
     error: '',
   },
   activeStatus: {
-    activeMethod: {
-      data: 0,
-    },
-    activeSql: {
-      data: 0,
-    },
-    activeHttpc: {
-      data: 0,
-    },
-    activeDbc: {
-      data: 0,
-    },
-    activeSocket: {
-      data: 0,
-    },
+    data: [],
+    key: '',
     error: '',
   },
   simultaneousUser: {
     data: [],
+    key: '',
     error: '',
   },
   yesterdayUsers: {
     data: [],
+    key: '',
     error: '',
   },
   todayUsers: {
     data: [],
+    key: '',
     error: '',
   },
   isLoading: true,

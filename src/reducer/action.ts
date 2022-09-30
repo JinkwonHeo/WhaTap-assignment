@@ -1,5 +1,5 @@
 import { DataActionTypes } from './actionTypes';
-import { IActiveStatus, IInformatics } from './types';
+import { IActiveStatus, IFetchedData, IInformatics } from './types';
 
 export const updateTpsData = (data: number) => {
   return {
@@ -42,6 +42,20 @@ export const updateTodayUsers = (data: [number, number][]) => ({
 export const updateLoadingStatus = (data: boolean) => {
   return {
     type: DataActionTypes.UPDATE_LOADING_STATUS,
+    data,
+  };
+};
+
+export const updateSpotData = (data: IFetchedData) => {
+  return {
+    type: DataActionTypes.UPDATE_SPOT_DATA,
+    data,
+  };
+};
+
+export const updateSeriesData = (data: IFetchedData) => {
+  return {
+    type: DataActionTypes.UPDATE_SERIES_DATA,
     data,
   };
 };
