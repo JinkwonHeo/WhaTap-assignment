@@ -1,11 +1,13 @@
-import { useContext } from 'react';
-import { DataContext } from '../../reducer/context';
+import { useContext, useEffect } from 'react';
+import { DataContext, DispatchContext } from '../../reducer/context';
 import { max } from 'd3';
 import BarChart from '../BarChart/BarChart';
 import { IBarChartData } from '../BarChart/type';
 import styled from 'styled-components';
+import { updateFetchedStatus, updateQueue } from '../../reducer/action';
 
 export default function ActiveStatusBarChart() {
+  const dispatch = useContext(DispatchContext);
   const { activeStatus } = useContext(DataContext);
 
   const data: IBarChartData[] = [
@@ -37,6 +39,19 @@ export default function ActiveStatusBarChart() {
   ];
 
   const maxValue: number | undefined = max(data, (entry) => entry.value);
+
+  useEffect(() => {
+    if (activeStatus.isFetched) {
+      dispatch(
+        updateQueue({
+          fetchType: 'spot',
+          fetchName: 'activeStatus',
+          promiseAllKey: ['act_method', 'act_sql', 'act_httpc', 'act_dbc', 'act_socket'],
+        })
+      );
+      dispatch(updateFetchedStatus(false, 'activeStatus'));
+    }
+  }, [activeStatus.isFetched]);
 
   return (
     <BarChartContainer>

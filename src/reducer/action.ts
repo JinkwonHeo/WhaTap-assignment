@@ -1,43 +1,5 @@
 import { DataActionTypes } from './actionTypes';
-import { IActiveStatus, IFetchedData, IInformatics } from './types';
-
-export const updateTpsData = (data: number) => {
-  return {
-    type: DataActionTypes.UPDATE_TPS_DATA,
-    data,
-  };
-};
-
-export const updateInformatics = (data: IInformatics) => {
-  return {
-    type: DataActionTypes.UPDATE_INFORMATICS_DATA,
-    data,
-  };
-};
-
-export const updateActiveStatus = (data: IActiveStatus) => {
-  return {
-    type: DataActionTypes.UPDATE_ACTIVE_STATUS_DATA,
-    data,
-  };
-};
-
-export const updateSimultaneousUser = (data: number) => {
-  return {
-    type: DataActionTypes.UPDATE_SIMULTANEOUS_USER,
-    data,
-  };
-};
-
-export const updateYesterdayUsers = (data: [number, number][]) => ({
-  type: DataActionTypes.UPDATE_YESTERDAY_USERS,
-  data,
-});
-
-export const updateTodayUsers = (data: [number, number][]) => ({
-  type: DataActionTypes.UPDATE_TODAY_USERS,
-  data,
-});
+import { IFetchedData } from './types';
 
 export const updateLoadingStatus = (data: boolean) => {
   return {
@@ -57,5 +19,20 @@ export const updateSeriesData = (data: IFetchedData) => {
   return {
     type: DataActionTypes.UPDATE_SERIES_DATA,
     data,
+  };
+};
+
+export const updateQueue = (data: any) => {
+  return {
+    type: DataActionTypes.UPDATE_QUEUE,
+    data,
+  };
+};
+
+export const updateFetchedStatus = (data: boolean, key: string) => {
+  return {
+    type: DataActionTypes.UPDATE_FETCHED_STATUS,
+    data,
+    key,
   };
 };

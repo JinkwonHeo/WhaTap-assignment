@@ -1,8 +1,10 @@
-import { Fragment, useContext } from 'react';
-import { DataContext } from '../../reducer/context';
+import { Fragment, useContext, useEffect } from 'react';
+import { DataContext, DispatchContext } from '../../reducer/context';
 import styled from 'styled-components';
+import { updateFetchedStatus, updateQueue } from '../../reducer/action';
 
 export default function Informatics() {
+  const dispatch = useContext(DispatchContext);
   const { informatics } = useContext(DataContext);
 
   const informaticsData: { name: string; value: number }[] = [
@@ -11,6 +13,19 @@ export default function Informatics() {
     { name: 'CPU 코어', value: informatics.data[2] },
     { name: 'Hosts', value: informatics.data[3] },
   ];
+
+  useEffect(() => {
+    if (informatics.isFetched) {
+      dispatch(
+        updateQueue({
+          fetchType: 'spot',
+          fetchName: 'informatics',
+          promiseAllKey: ['act_agent', 'inact_agent', 'cpucore', 'host'],
+        })
+      );
+      dispatch(updateFetchedStatus(false, 'informatics'));
+    }
+  }, [informatics.isFetched]);
 
   return (
     <InformaticsFlexContainer>

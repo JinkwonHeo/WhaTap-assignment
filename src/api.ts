@@ -82,12 +82,20 @@ const getOpenApi =
 
     const promiseAllResponse = await Promise.all(
       url.map(async (element) => {
-        const res = await fetch(getPath(element!, param), {
-          headers: requestHeaders,
-          signal: abortController.signal,
-        });
-        if (res.ok) {
-          return res.json();
+        try {
+          const res = await fetch(getPath(element!, param), {
+            headers: requestHeaders,
+            signal: abortController.signal,
+          });
+
+          if (res.ok) {
+            return res.json();
+          } else {
+            throw Error('에러 발생');
+          }
+        } catch (error) {
+          console.log('api파일 내부');
+          console.error(error);
         }
       })
     );
@@ -95,7 +103,7 @@ const getOpenApi =
     return { key, fetchName, promiseAllResponse };
   };
 
-const spot = getOpenApi(''); // spot 정보 조회
-const series = getOpenApi('json'); // 통계 정보 조회
+const spot = getOpenApi('');
+const series = getOpenApi('json');
 
 export default { spot, series };

@@ -1,25 +1,60 @@
-import { RefCallback, SetStateAction, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
-function useInterval(callback: SetStateAction<any>, delay: number) {
-  const savedCallback = useRef<RefCallback<HTMLElement> | null>(null);
+export default function useInterval<t>(
+  callback: (() => Promise<t>) | (() => void),
+  delay: number | null,
+  pollId: number
+) {
+  const savedCallback = useRef(callback);
+  const savedDelay = useRef(delay);
+  const savedPollId = useRef(pollId);
 
   useEffect(() => {
     savedCallback.current = callback;
   }, [callback]);
 
-  let id = setTimeout(tick, delay);
+  useEffect(() => {
+    savedDelay.current = delay;
+  }, [delay]);
 
-  function tick() {
-    if (savedCallback.current) {
-      savedCallback.current(null);
+  useEffect(() => {
+    savedPollId.current = pollId;
+  }, [pollId]);
+
+  useEffect(() => {
+    let id: NodeJS.Timeout;
+
+    function tick() {
+      if (savedPollId.current != pollId) {
+        return;
+      }
+
+      const ret = savedCallback.current();
+
+      if (ret instanceof Promise) {
+        ret.then(() => {
+          if (savedPollId.current != pollId) {
+            return;
+          }
+
+          if (savedDelay.current !== null) {
+            id = setTimeout(tick, savedDelay.current);
+          }
+        });
+      } else {
+        if (savedPollId.current != pollId) {
+          return;
+        }
+
+        if (savedDelay.current !== null) {
+          id = setTimeout(tick, savedDelay.current);
+        }
+      }
     }
+    if (savedDelay.current !== null) {
+      id = setTimeout(tick, savedDelay.current);
 
-    if (delay !== null) {
-      id = setTimeout(tick, delay);
-
-      return () => clearInterval(id);
+      return () => id && clearTimeout(id);
     }
-  }
+  }, [delay]);
 }
-
-export default useInterval;

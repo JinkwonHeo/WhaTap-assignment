@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
-import { DataContext } from '../../reducer/context';
+import { DataContext, DispatchContext } from '../../reducer/context';
 import { max } from 'd3';
 import LineChart from '../LineChart/LineChart';
 import styled from 'styled-components';
 import { Text } from '../shared/Text';
 import getMaxDomainValue from '../../utils/getMaxDomainValue';
+import { updateFetchedStatus, updateQueue } from '../../reducer/action';
 
 export default function TPSLineChart() {
+  const dispatch = useContext(DispatchContext);
   const [maxDomainValue, setMaxDomainValue] = useState(0);
   const { tps } = useContext(DataContext);
   const data = tps.data.map((element) => element.data);
@@ -25,7 +27,20 @@ export default function TPSLineChart() {
         setMaxDomainValue(value);
       }
     }
-  }, [data]);
+  }, [maxDataValue, maxDomainValue]);
+
+  useEffect(() => {
+    if (tps.isFetched) {
+      dispatch(
+        updateQueue({
+          fetchType: 'spot',
+          fetchName: 'tps',
+          promiseAllKey: ['tps'],
+        })
+      );
+      dispatch(updateFetchedStatus(false, 'tps'));
+    }
+  }, [tps.isFetched]);
 
   return (
     <LineChartContainer>
