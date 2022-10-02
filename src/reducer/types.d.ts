@@ -8,6 +8,7 @@ type State = {
   simultaneousUser: ISimultaneousUser;
   yesterdayUsers: ITodayYesterdayUser;
   todayUsers: ITodayYesterdayUser;
+  queue: IQueue[];
   isLoading: boolean;
 };
 
@@ -38,6 +39,7 @@ interface ITps {
     timeStamp: number;
     data: number;
   }[];
+  isFetched: boolean;
   key: string;
   error?: string;
 }
@@ -45,12 +47,14 @@ interface ITps {
 interface IInformatics {
   data: number[];
   key: string;
+  isFetched: boolean;
   error?: string;
 }
 
 interface IActiveStatus {
   data: number[];
   key: string;
+  isFetched: boolean;
   error?: string;
 }
 
@@ -59,12 +63,14 @@ interface ISimultaneousUser {
     timeStamp: number;
     data: number;
   }[];
+  isFetched: boolean;
   key: string;
   error?: string;
 }
 
 interface ITodayYesterdayUser {
   data: any;
+  isFetched: boolean;
   key: string;
   error?: string;
 }
@@ -75,4 +81,14 @@ interface IFetchedData {
   promiseAllResponse: any[];
 }
 
-export { State, Action, DataDispatch, ITps, IActiveStatus, IInformatics, IFetchedData };
+interface IQueue {
+  fetchType: string;
+  fetchName: string;
+  promiseAllKey: string[];
+  params?: {
+    stime: number;
+    etime: number;
+  };
+}
+
+export { State, Action, DataDispatch, IFetchedData };
