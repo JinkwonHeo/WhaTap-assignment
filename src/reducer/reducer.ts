@@ -43,7 +43,7 @@ function reducer(state: State, action: Action) {
           return nextState;
         }
 
-        if (action.data.fetchName === 'user') {
+        if (action.data.fetchName === 'simultaneousUser') {
           const date = Date.now();
           const dataWithTimeStamp = {
             timeStamp: date,
@@ -104,7 +104,7 @@ function reducer(state: State, action: Action) {
           draft.activeStatus.isFetched = action.data;
         }
 
-        if (action.key === 'user') {
+        if (action.key === 'simultaneousUser') {
           draft.simultaneousUser.isFetched = action.data;
         }
 
