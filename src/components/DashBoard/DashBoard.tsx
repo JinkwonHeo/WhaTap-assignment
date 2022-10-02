@@ -1,13 +1,10 @@
 import { useContext } from 'react';
 import { DataContext } from '../../reducer/context';
-import TPSLineChart from '../TPSLineChart/TPSLineChart';
 import Informatics from '../Informatics/Informatics';
-import ActiveStatusBarChart from '../ActiveStatusBarChart/ActiveStatusBarChart';
 import { WidgetContainer } from '../shared/WidgetContainer';
 import { Container } from '../shared/Container';
-import SimultaneousUserLineChart from '../SimultaneousUserLineChart/SimultaneousUserLineChart';
-import TodayUsersLineChart from '../TodayUsersLineChart/TodayUsersLineChart';
 import useFetch from '../../hooks/useFetch';
+import { MemoizedWidget } from '../Widget/Widget';
 
 export default function DashBoard() {
   const { isLoading } = useContext(DataContext);
@@ -21,17 +18,25 @@ export default function DashBoard() {
       ) : (
         <>
           <WidgetContainer>
+            <MemoizedWidget
+              widgetType={'simultaneousUser'}
+              chartType={'line'}
+              title={'동시접속 사용자'}
+            />
+          </WidgetContainer>
+          <WidgetContainer>
+            <MemoizedWidget widgetType={'tps'} chartType={'line'} title={'TPS'} />
+          </WidgetContainer>
+          <WidgetContainer>
+            <MemoizedWidget widgetType={'todayUsers'} chartType={'line'} title={'금일 사용자'} />
+          </WidgetContainer>
+          <WidgetContainer>
             <Informatics />
-            <ActiveStatusBarChart />
-          </WidgetContainer>
-          <WidgetContainer>
-            <TodayUsersLineChart />
-          </WidgetContainer>
-          <WidgetContainer>
-            <TPSLineChart />
-          </WidgetContainer>
-          <WidgetContainer>
-            <SimultaneousUserLineChart />
+            <MemoizedWidget
+              widgetType={'activeStatus'}
+              chartType={'bar'}
+              title={'액티브 스테이터스'}
+            />
           </WidgetContainer>
         </>
       )}

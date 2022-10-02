@@ -48,7 +48,7 @@ const INITIAL_STATE = {
     },
     {
       fetchType: 'spot',
-      fetchName: 'user',
+      fetchName: 'simultaneousUser',
       promiseAllKey: ['user'],
     },
     {
@@ -80,9 +80,17 @@ export const DispatchContext = createContext<DataDispatch>(() => null);
 export default function DataProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
 
+  const memoizedState = useMemo(() => {
+    return state;
+  }, [state]);
+
+  const memoizedDispatch = useMemo(() => {
+    return dispatch;
+  }, [dispatch]);
+
   return (
-    <DataContext.Provider value={state}>
-      <DispatchContext.Provider value={dispatch}>{children}</DispatchContext.Provider>
+    <DataContext.Provider value={memoizedState}>
+      <DispatchContext.Provider value={memoizedDispatch}>{children}</DispatchContext.Provider>
     </DataContext.Provider>
   );
 }
