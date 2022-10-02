@@ -2,6 +2,7 @@ import { Fragment, useContext, useEffect } from 'react';
 import { DataContext, DispatchContext } from '../../reducer/context';
 import styled from 'styled-components';
 import { updateFetchedStatus, updateQueue } from '../../reducer/action';
+import { QUEUE_FORMAT } from '../../constants';
 
 export default function Informatics() {
   const dispatch = useContext(DispatchContext);
@@ -16,13 +17,7 @@ export default function Informatics() {
 
   useEffect(() => {
     if (informatics.isFetched) {
-      dispatch(
-        updateQueue({
-          fetchType: 'spot',
-          fetchName: 'informatics',
-          promiseAllKey: ['act_agent', 'inact_agent', 'cpucore', 'host'],
-        })
-      );
+      dispatch(updateQueue(QUEUE_FORMAT.informatics));
       dispatch(updateFetchedStatus(false, 'informatics'));
     }
   }, [informatics.isFetched]);

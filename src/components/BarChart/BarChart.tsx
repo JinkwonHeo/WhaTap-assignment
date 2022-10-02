@@ -3,7 +3,6 @@ import { select, scaleBand, scaleLinear, max, axisLeft } from 'd3';
 import useResizeObserver from '../../hooks/useResizeOBserver';
 import { IBarChartData, INode } from './type';
 import styled from 'styled-components';
-import { Text } from '../shared/Text';
 
 export default function BarChart({
   data,
@@ -71,7 +70,6 @@ export default function BarChart({
 
   return (
     <>
-      <Text>액티브 스테이터스</Text>
       <SvgWrapper ref={wrappedRef}>
         <BarChartSvg ref={svgRef}>
           <BarChartGroup className="value-axis" />
