@@ -5,6 +5,7 @@ import { WidgetContainer } from '../shared/WidgetContainer';
 import { Container } from '../shared/Container';
 import useFetch from '../../hooks/useFetch';
 import { MemoizedWidget } from '../Widget/Widget';
+import LoadingCircle from '../LoadingCircle/LoadingCircle';
 
 export default function DashBoard() {
   const { isLoading } = useContext(DataContext);
@@ -12,11 +13,11 @@ export default function DashBoard() {
   useFetch();
 
   return (
-    <Container>
+    <>
       {isLoading ? (
-        'loading...'
+        <LoadingCircle />
       ) : (
-        <>
+        <Container>
           <WidgetContainer>
             <MemoizedWidget
               widgetType={'simultaneousUser'}
@@ -38,8 +39,8 @@ export default function DashBoard() {
               title={'액티브 스테이터스'}
             />
           </WidgetContainer>
-        </>
+        </Container>
       )}
-    </Container>
+    </>
   );
 }
