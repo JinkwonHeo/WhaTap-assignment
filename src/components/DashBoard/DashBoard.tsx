@@ -1,10 +1,10 @@
 import { useContext } from 'react';
 import { DataContext } from '../../reducer/context';
-import Informatics from '../Informatics/Informatics';
+import Informatics from './Informatics/Informatics';
 import { WidgetContainer } from '../shared/WidgetContainer';
 import { Container } from '../shared/Container';
 import useFetch from '../../hooks/useFetch';
-import { MemoizedWidget } from '../Widget/Widget';
+import MemoizedWidget from './Widget/Widget';
 import LoadingCircle from '../LoadingCircle/LoadingCircle';
 import { WIDGET_INFORMATION } from '../../constants';
 import { MdDarkMode, MdOutlineLightMode } from 'react-icons/md';

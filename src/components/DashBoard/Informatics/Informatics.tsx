@@ -1,8 +1,8 @@
 import { Fragment, useContext, useEffect } from 'react';
-import { DataContext, DispatchContext } from '../../reducer/context';
+import { DataContext, DispatchContext } from '../../../reducer/context';
 import styled from 'styled-components';
-import { updateFetchedStatus, updateQueue } from '../../reducer/action';
-import { QUEUE_FORMAT } from '../../constants';
+import { updateFetchedStatus, updateQueue } from '../../../reducer/action';
+import { QUEUE_FORMAT } from '../../../constants';
 
 export default function Informatics() {
   const dispatch = useContext(DispatchContext);

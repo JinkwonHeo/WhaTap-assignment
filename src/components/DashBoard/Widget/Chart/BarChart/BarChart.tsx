@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
-import { select, scaleBand, scaleLinear, max, axisLeft } from 'd3';
-import useResizeObserver from '../../hooks/useResizeOBserver';
+import { select, scaleBand, scaleLinear, axisLeft } from 'd3';
+import useResizeObserver from '../../../../../hooks/useResizeOBserver';
 import { IBarChartData, INode } from './type';
 import styled from 'styled-components';
 

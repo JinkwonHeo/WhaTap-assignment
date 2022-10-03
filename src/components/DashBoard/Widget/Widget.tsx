@@ -1,19 +1,19 @@
 import { max } from 'd3';
-import React, { useContext, useEffect, memo, useState, Fragment } from 'react';
+import React, { useContext, useEffect, useState, Fragment } from 'react';
 import { IoMdInformationCircleOutline } from 'react-icons/io';
 import styled from 'styled-components';
-import { DAY, MINUTE, QUEUE_FORMAT, TODAY_MIDNIGHT } from '../../constants';
-import { updateFetchedStatus, updateQueue } from '../../reducer/action';
-import { DataContext, DispatchContext } from '../../reducer/context';
-import getMaxDomainValue from '../../utils/getMaxDomainValue';
-import BarChart from '../BarChart/BarChart';
-import LineChart from '../LineChart/LineChart';
-import Modal from '../Modal/Modal';
-import ModalPortal from '../Portal/Portal';
-import { Text } from '../shared/Text';
+import { DAY, MINUTE, QUEUE_FORMAT, TODAY_MIDNIGHT } from '../../../constants';
+import { updateFetchedStatus, updateQueue } from '../../../reducer/action';
+import { DataContext, DispatchContext } from '../../../reducer/context';
+import getMaxDomainValue from '../../../utils/getMaxDomainValue';
+import BarChart from './Chart/BarChart/BarChart';
+import LineChart from './Chart/LineChart/LineChart';
+import Modal from '../../Modal/Modal';
+import ModalPortal from '../../Portal/Portal';
+import { Text } from '../../shared/Text';
 import { IInformation, IInformButtonPosition } from './types';
 
-export function Widget({
+export default function Widget({
   widgetType,
   information,
   chartType,
@@ -218,5 +218,3 @@ const ModalContentParagraph = styled.div`
   margin-bottom: 1.5rem;
   word-break: keep-all;
 `;
-
-export const MemoizedWidget = memo(Widget);
