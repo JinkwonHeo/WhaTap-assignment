@@ -138,7 +138,7 @@ export function Widget({
                     <ModalContent>
                       {information?.description.map((paragraph, index) => (
                         <Fragment key={index}>
-                          <p>{paragraph}</p>
+                          <ModalContentParagraph>{paragraph}</ModalContentParagraph>
                         </Fragment>
                       ))}
                     </ModalContent>
@@ -212,6 +212,11 @@ const ModalContent = styled.div`
   font-family: Pretendard-light;
   font-size: 1rem;
   color: #000000c3;
+`;
+
+const ModalContentParagraph = styled.div`
+  margin-bottom: 1.5rem;
+  word-break: keep-all;
 `;
 
 export const MemoizedWidget = memo(Widget);

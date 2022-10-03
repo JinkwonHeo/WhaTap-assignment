@@ -45,7 +45,7 @@ const InformaticsFlexContainer = styled.div`
   height: 100%;
   min-height: 0px;
   max-width: 100px;
-  padding: 0.4rem;
+  margin: 0.4rem;
 `;
 
 const InformaticsGridContainer = styled.div`
