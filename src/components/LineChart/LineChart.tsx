@@ -73,7 +73,7 @@ export default function LineChart({
               Number(maxDomainValue) / 4
             )
       )
-      .tickSize(0)
+      .tickSize(-dimensions.width)
       .tickPadding(6)
       .tickSizeOuter(0);
 
@@ -91,7 +91,7 @@ export default function LineChart({
       .selectAll('stop')
       .data([
         { offset: '0%', color: '#81b8fc' },
-        { offset: '100%', color: '#B4EBFD' },
+        { offset: '80%', color: '#B4EBFD' },
       ])
       .enter()
       .append('stop')
@@ -120,6 +120,9 @@ export default function LineChart({
       .attr('d', areaGenerator)
       .attr('fill', isSeries ? '#e5e5e5' : 'url(#line-gradient)');
 
+    svg.selectAll('line').style('stroke', '#99999950').style('stroke-dasharray', '3, 0.5');
+    svg.select('.domain').style('stroke', 'black');
+
     if (isSeries) {
       svg
         .selectAll('.sub-line')
@@ -139,6 +142,10 @@ export default function LineChart({
         .attr('d', areaGenerator)
         .attr('fill', 'url(#line-gradient)');
     }
+
+    return () => {
+      select('linearGradient').remove();
+    };
   }, [data, dimensions]);
 
   return (
