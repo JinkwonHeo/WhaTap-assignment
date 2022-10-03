@@ -80,29 +80,27 @@ export default function LineChart({
     svg.select('.x-axis').style('transform', `translateY(${dimensions.height}px)`).call(xAxis);
     svg.select('.y-axis').call(yAxis);
 
-    if (!document.getElementById('line-gradient')) {
-      svg
-        .append('linearGradient')
-        .attr('id', 'line-gradient')
-        .attr('gradientUnits', 'userSpaceOnUse')
-        .attr('x1', 0)
-        .attr('y1', yScale(0))
-        .attr('x2', 0)
-        .attr('y2', yScale(gradientScaleValue))
-        .selectAll('stop')
-        .data([
-          { offset: '0%', color: '#81b8fc' },
-          { offset: '100%', color: '#B4EBFD' },
-        ])
-        .enter()
-        .append('stop')
-        .attr('offset', function (d) {
-          return d.offset;
-        })
-        .attr('stop-color', function (d) {
-          return d.color;
-        });
-    }
+    svg
+      .append('linearGradient')
+      .attr('id', 'line-gradient')
+      .attr('gradientUnits', 'userSpaceOnUse')
+      .attr('x1', 0)
+      .attr('y1', yScale(0))
+      .attr('x2', 0)
+      .attr('y2', yScale(gradientScaleValue))
+      .selectAll('stop')
+      .data([
+        { offset: '0%', color: '#81b8fc' },
+        { offset: '80%', color: '#B4EBFD' },
+      ])
+      .enter()
+      .append('stop')
+      .attr('offset', function (d) {
+        return d.offset;
+      })
+      .attr('stop-color', function (d) {
+        return d.color;
+      });
 
     svg
       .selectAll('.line')
@@ -144,6 +142,10 @@ export default function LineChart({
         .attr('d', areaGenerator)
         .attr('fill', 'url(#line-gradient)');
     }
+
+    return () => {
+      select('linearGradient').remove();
+    };
   }, [data, dimensions]);
 
   return (
