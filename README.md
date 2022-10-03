@@ -82,6 +82,71 @@
   </details>
   <br>
 
+## 폴더 구조
+<details><summary>폴더 구조</summary>
+
+```
+📦src
+ ┣ 📂components
+ ┃ ┣ 📂DashBoard
+ ┃ ┃ ┣ 📂Informatics
+ ┃ ┃ ┃ ┗ 📜Informatics.tsx
+ ┃ ┃ ┣ 📂Widget
+ ┃ ┃ ┃ ┣ 📂Chart
+ ┃ ┃ ┃ ┃ ┣ 📂BarChart
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜BarChart.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜type.d.ts
+ ┃ ┃ ┃ ┃ ┗ 📂LineChart
+ ┃ ┃ ┃ ┃ ┃ ┣ 📜LineChart.tsx
+ ┃ ┃ ┃ ┃ ┃ ┗ 📜type.d.ts
+ ┃ ┃ ┃ ┣ 📜Widget.tsx
+ ┃ ┃ ┃ ┗ 📜types.d.ts
+ ┃ ┃ ┗ 📜DashBoard.tsx
+ ┃ ┣ 📂ErrorBoundary
+ ┃ ┃ ┣ 📜ErrorBoundary.tsx
+ ┃ ┃ ┗ 📜ErrorUI.tsx
+ ┃ ┣ 📂LoadingCircle
+ ┃ ┃ ┗ 📜LoadingCircle.tsx
+ ┃ ┣ 📂Modal
+ ┃ ┃ ┗ 📜Modal.tsx
+ ┃ ┣ 📂Portal
+ ┃ ┃ ┗ 📜Portal.tsx
+ ┃ ┗ 📂shared
+ ┃ ┃ ┣ 📜Container.tsx
+ ┃ ┃ ┣ 📜Text.tsx
+ ┃ ┃ ┗ 📜WidgetContainer.tsx
+ ┣ 📂constants
+ ┃ ┣ 📜index.ts
+ ┃ ┣ 📜queueFormat.ts
+ ┃ ┗ 📜widgetInformation.ts
+ ┣ 📂hooks
+ ┃ ┣ 📜useFetch.ts
+ ┃ ┣ 📜useInterval.ts
+ ┃ ┗ 📜useResizeOBserver.tsx
+ ┣ 📂reducer
+ ┃ ┣ 📜action.ts
+ ┃ ┣ 📜actionTypes.ts
+ ┃ ┣ 📜context.tsx
+ ┃ ┣ 📜reducer.ts
+ ┃ ┗ 📜types.d.ts
+ ┣ 📂style
+ ┃ ┣ 📂fonts
+ ┃ ┃ ┣ 📜Pretendard-Bold.ttf
+ ┃ ┃ ┣ 📜Pretendard-Light.ttf
+ ┃ ┃ ┗ 📜Pretendard-Medium.ttf
+ ┃ ┣ 📜GlobalStyles.tsx
+ ┃ ┣ 📜index.css
+ ┃ ┣ 📜styled.d.ts
+ ┃ ┗ 📜theme.ts
+ ┣ 📂utils
+ ┃ ┗ 📜getMaxDomainValue.ts
+ ┣ 📜App.tsx
+ ┣ 📜api.ts
+ ┗ 📜index.tsx
+ ```
+  </details>
+  <br>
+
 ## 기술 스택
 
 - TypeScript
