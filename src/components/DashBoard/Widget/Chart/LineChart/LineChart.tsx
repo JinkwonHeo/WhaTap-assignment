@@ -13,7 +13,7 @@ import {
   max,
   timeHour,
 } from 'd3';
-import useResizeObserver from '../../hooks/useResizeOBserver';
+import useResizeObserver from '../../../../../hooks/useResizeOBserver';
 import styled from 'styled-components';
 import { IAxisData } from './type';
 
@@ -145,6 +145,8 @@ export default function LineChart({
 
     return () => {
       select('linearGradient').remove();
+      select('.focus').remove();
+      select('.overlay').remove();
     };
   }, [data, dimensions]);
 

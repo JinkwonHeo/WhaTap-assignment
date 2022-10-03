@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useReducer, useState } from 'react';
+import React, { createContext, useMemo, useReducer } from 'react';
 import reducer from './reducer';
 import { State, DataDispatch } from './types';
 import { TODAY_MIDNIGHT } from '../constants';

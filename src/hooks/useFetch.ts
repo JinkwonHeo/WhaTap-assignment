@@ -24,7 +24,7 @@ export default function useFetch() {
     if (yesterdayUsers) {
       dispatch(updateSeriesData(yesterdayUsers));
 
-      return setTimeout(fetchApi, 50);
+      return setTimeout(fetchApi, 300);
     }
   }
 
