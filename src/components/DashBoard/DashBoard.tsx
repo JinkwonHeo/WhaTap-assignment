@@ -6,6 +6,7 @@ import { Container } from '../shared/Container';
 import useFetch from '../../hooks/useFetch';
 import { MemoizedWidget } from '../Widget/Widget';
 import LoadingCircle from '../LoadingCircle/LoadingCircle';
+import { WIDGET_INFORMATION } from '../../constants';
 
 export default function DashBoard() {
   const { isLoading } = useContext(DataContext);
@@ -23,13 +24,24 @@ export default function DashBoard() {
               widgetType={'simultaneousUser'}
               chartType={'line'}
               title={'동시접속 사용자'}
+              information={WIDGET_INFORMATION.simultaneousUser}
             />
           </WidgetContainer>
           <WidgetContainer>
-            <MemoizedWidget widgetType={'tps'} chartType={'line'} title={'TPS'} />
+            <MemoizedWidget
+              widgetType={'tps'}
+              chartType={'line'}
+              title={'TPS'}
+              information={WIDGET_INFORMATION.tps}
+            />
           </WidgetContainer>
           <WidgetContainer>
-            <MemoizedWidget widgetType={'todayUsers'} chartType={'line'} title={'금일 사용자'} />
+            <MemoizedWidget
+              widgetType={'todayUsers'}
+              chartType={'line'}
+              title={'금일 사용자'}
+              information={WIDGET_INFORMATION.todayUsers}
+            />
           </WidgetContainer>
           <WidgetContainer>
             <Informatics />
@@ -37,6 +49,7 @@ export default function DashBoard() {
               widgetType={'activeStatus'}
               chartType={'bar'}
               title={'액티브 스테이터스'}
+              information={WIDGET_INFORMATION.activeStatus}
             />
           </WidgetContainer>
         </Container>

@@ -1,8 +1,16 @@
 type ObjType = {
   [key: string]: string;
   widgetType: 'activeStatus' | 'tps' | 'informatics' | 'todayUsers' | 'simultaneousUser';
-  chartType: string;
-  title: string;
 };
 
-export { ObjType };
+interface IInformation {
+  title: string;
+  description: string[];
+}
+
+interface IInformButtonPosition {
+  x: number;
+  y: number;
+}
+
+export { ObjType, IInformation, IInformButtonPosition };
