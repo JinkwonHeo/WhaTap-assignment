@@ -1,6 +1,7 @@
 import { Action, State } from './types';
 import { DataActionTypes } from './actionTypes';
 import produce from 'immer';
+import { SECOND } from '../constants';
 
 function reducer(state: State, action: Action) {
   switch (action.type) {
@@ -15,11 +16,19 @@ function reducer(state: State, action: Action) {
     case DataActionTypes.UPDATE_SPOT_DATA: {
       const nextState = produce(state, (draft: State) => {
         if (action.data.fetchName === 'activeStatus') {
+          if (action.data.promiseAllResponse.includes(undefined)) {
+            return state;
+          }
+
           draft.activeStatus.data = action.data.promiseAllResponse;
           draft.activeStatus.key = action.data.fetchName;
         }
 
         if (action.data.fetchName === 'informatics') {
+          if (action.data.promiseAllResponse.includes(undefined)) {
+            return state;
+          }
+
           draft.informatics.data = action.data.promiseAllResponse;
           draft.informatics.key = action.data.fetchName;
         }
@@ -34,10 +43,28 @@ function reducer(state: State, action: Action) {
           };
 
           const nextState = produce(state, (draft: State) => {
-            draft.tps.key = action.data.fetchName;
-            draft.tps.data.push(dataWithTimeStamp);
+            if (!state.tps.data.length) {
+              const initialData = [];
 
-            if (draft.tps.data.length > 120) draft.tps.data.shift();
+              for (let i = 119; i > -1; i--) {
+                initialData.push({
+                  timeStamp: date - SECOND * 5 * i,
+                  data: isNaN(action.data.promiseAllResponse[0])
+                    ? state.tps.data[state.tps.data.length - 1].data
+                    : Number(action.data.promiseAllResponse[0]),
+                });
+              }
+
+              draft.tps.key = action.data.fetchName;
+              draft.tps.data = initialData;
+            } else {
+              draft.tps.key = action.data.fetchName;
+              draft.tps.data.push(dataWithTimeStamp);
+
+              if (draft.tps.data.length > 120) {
+                draft.tps.data.shift();
+              }
+            }
           });
 
           return nextState;
@@ -53,10 +80,28 @@ function reducer(state: State, action: Action) {
           };
 
           const nextState = produce(state, (draft: State) => {
-            draft.simultaneousUser.key = action.data.fetchName;
-            draft.simultaneousUser.data.push(dataWithTimeStamp);
+            if (!state.simultaneousUser.data.length) {
+              const initialData = [];
 
-            if (draft.simultaneousUser.data.length > 120) draft.simultaneousUser.data.shift();
+              for (let i = 119; i > -1; i--) {
+                initialData.push({
+                  timeStamp: date - SECOND * 5 * i,
+                  data: isNaN(action.data.promiseAllResponse[0])
+                    ? state.simultaneousUser.data[state.simultaneousUser.data.length - 1].data
+                    : Number(action.data.promiseAllResponse[0]),
+                });
+              }
+
+              draft.simultaneousUser.key = action.data.fetchName;
+              draft.simultaneousUser.data = initialData;
+            } else {
+              draft.simultaneousUser.key = action.data.fetchName;
+              draft.simultaneousUser.data.push(dataWithTimeStamp);
+
+              if (draft.simultaneousUser.data.length > 120) {
+                draft.simultaneousUser.data.shift();
+              }
+            }
           });
 
           return nextState;
